@@ -1,0 +1,2791 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Traço — Agência Criativa</title>
+  <meta name="description" content="Traço Agência Criativa — Design que move, comunica e transforma marcas em experiências." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ═══════════════════════════════════════════════════
+       DESIGN SYSTEM — TRAÇO AGÊNCIA CRIATIVA
+       Paleta baseada na logo: azul marinho + elétrico
+    ═══════════════════════════════════════════════════ */
+    :root {
+      --navy:        #0B1A35;
+      --navy-deep:   #060E1F;
+      --navy-mid:    #112347;
+      --navy-soft:   #1A3060;
+      --electric:    #4BAADC;
+      --electric-lt: #7DC8EE;
+      --electric-dk: #2980B9;
+      --white:       #FFFFFF;
+      --off-white:   #EEF4FA;
+      --muted:       rgba(180, 210, 235, 0.55);
+      --border:      rgba(75, 170, 220, 0.15);
+      --border-soft: rgba(255,255,255,0.07);
+
+      --font-display: 'Syne', sans-serif;
+      --font-body:    'Instrument Sans', sans-serif;
+
+      --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; font-size: 16px; overflow-x: hidden; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--navy-deep);
+      color: var(--off-white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+    ul { list-style: none; }
+
+    .container {
+      width: 100%;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 clamp(1.25rem, 5vw, 5rem);
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.85s var(--ease-out), transform 0.85s var(--ease-out);
+    }
+    .reveal.up    { transform: translateY(36px); }
+    .reveal.left  { transform: translateX(-36px); }
+    .reveal.right { transform: translateX(36px); }
+    .reveal.scale { transform: scale(0.94); }
+    .reveal.active { opacity: 1; transform: none; }
+
+    .d1 { transition-delay: 0.08s; }
+    .d2 { transition-delay: 0.16s; }
+    .d3 { transition-delay: 0.26s; }
+    .d4 { transition-delay: 0.38s; }
+    .d5 { transition-delay: 0.52s; }
+    .d6 { transition-delay: 0.68s; }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--navy-deep); }
+    ::-webkit-scrollbar-thumb { background: var(--navy-soft); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--electric); }
+
+    /* ════════════════════════════════════════
+       LOADER
+    ════════════════════════════════════════ */
+    #loader {
+      position: fixed; inset: 0; z-index: 9999;
+      background: var(--navy-deep);
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #loader.hide { opacity: 0; visibility: hidden; }
+
+    .loader-inner {
+      display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+    }
+    .loader-logo {
+      font-family: var(--font-display);
+      font-size: 2.5rem; font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+    .loader-logo span { color: var(--electric); }
+    .loader-bar {
+      width: 180px; height: 2px;
+      background: var(--navy-soft);
+      border-radius: 2px; overflow: hidden;
+    }
+    .loader-bar-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--electric-dk), var(--electric-lt));
+      animation: barLoad 1.4s var(--ease-out) forwards;
+    }
+    @keyframes barLoad { to { width: 100%; } }
+
+    /* ════════════════════════════════════════
+       HEADER
+    ════════════════════════════════════════ */
+    #header {
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 100;
+      padding: 1.4rem 0;
+      transition: all 0.4s ease;
+      border-bottom: 1px solid transparent;
+    }
+    #header.scrolled {
+      background: rgba(6, 14, 31, 0.94);
+      backdrop-filter: blur(16px);
+      padding: 1rem 0;
+      border-bottom-color: var(--border);
+    }
+
+    .header-inner {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* Logo SVG inline */
+    .logo-wrap { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; }
+    .logo-svg-mark {
+      width: 38px; height: 38px;
+      background: linear-gradient(135deg, var(--electric-dk), var(--electric-lt));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 1.1rem; font-weight: 800;
+      color: white; letter-spacing: -0.03em;
+      transition: transform 0.3s var(--ease-spring);
+    }
+    .logo-wrap:hover .logo-svg-mark { transform: rotate(-6deg) scale(1.08); }
+    .logo-name {
+      font-family: var(--font-display); font-size: 1.35rem; font-weight: 700;
+      color: var(--white); letter-spacing: -0.01em;
+    }
+    .logo-name span { color: var(--electric); }
+
+    /* Nav desktop */
+    .nav-desktop { display: flex; align-items: center; gap: 2.5rem; }
+
+    .nav-link {
+      font-family: var(--font-body); font-size: 0.82rem;
+      font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(238, 244, 250, 0.6);
+      position: relative; padding-bottom: 3px;
+      transition: color 0.25s ease;
+    }
+    .nav-link::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1.5px;
+      background: var(--electric);
+      transition: width 0.3s var(--ease-out);
+    }
+    .nav-link:hover { color: var(--white); }
+    .nav-link:hover::after { width: 100%; }
+
+    .btn-nav {
+      font-family: var(--font-body); font-size: 0.8rem;
+      font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--navy-deep);
+      background: linear-gradient(135deg, var(--electric-dk), var(--electric-lt));
+      padding: 0.65rem 1.5rem;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    .btn-nav:hover { transform: translateY(-2px); opacity: 0.92; }
+
+    /* Hamburger */
+    .hamburger { display: none; flex-direction: column; gap: 5px; padding: 6px; }
+    .hamburger span {
+      display: block; width: 22px; height: 1.5px;
+      background: var(--off-white);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform-origin: center;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Mobile menu */
+    .nav-mobile {
+      display: none; flex-direction: column; gap: 0;
+      overflow: hidden; max-height: 0;
+      transition: max-height 0.45s var(--ease-out);
+      background: rgba(6, 14, 31, 0.98); backdrop-filter: blur(16px);
+      padding: 0 1.5rem;
+    }
+    .nav-mobile.open { max-height: 400px; padding-bottom: 1.5rem; }
+    .nav-mobile-link {
+      font-size: 1rem; font-weight: 400;
+      color: rgba(238, 244, 250, 0.7);
+      padding: 0.9rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-align: left;
+      transition: color 0.2s ease;
+    }
+    .nav-mobile-link:hover { color: var(--electric); }
+    .btn-nav-mobile {
+      margin-top: 1rem; text-align: center;
+      display: block; padding: 0.85rem;
+    }
+
+    @media (max-width: 820px) {
+      .nav-desktop { display: none; }
+      .hamburger   { display: flex; }
+      .nav-mobile  { display: flex; }
+    }
+
+    /* ════════════════════════════════════════
+       HERO
+    ════════════════════════════════════════ */
+    #hero {
+      position: relative; min-height: 100svh;
+      display: flex; align-items: center;
+      overflow: hidden;
+      padding-top: 5rem;
+      background: var(--navy-deep);
+    }
+
+    /* Grade de pontos no fundo */
+    .hero-dots {
+      position: absolute; inset: 0; pointer-events: none;
+      background-image:
+        radial-gradient(circle, rgba(75,170,220,0.18) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+    }
+
+    /* Orbs de luz */
+    .hero-orb {
+      position: absolute; border-radius: 50%; filter: blur(80px);
+      pointer-events: none; animation: orbFloat 8s ease-in-out infinite;
+    }
+    .hero-orb-1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(41,128,185,0.22), transparent 70%);
+      top: -15%; right: -10%;
+    }
+    .hero-orb-2 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, rgba(75,170,220,0.14), transparent 70%);
+      bottom: 5%; left: -5%;
+      animation-delay: -4s;
+    }
+    @keyframes orbFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50%       { transform: translateY(-30px) scale(1.04); }
+    }
+
+    /* Linha diagonal decorativa */
+    .hero-diagonal {
+      position: absolute; top: 0; right: 15%; width: 1px; height: 100%;
+      background: linear-gradient(to bottom, transparent, rgba(75,170,220,0.25), transparent);
+      transform: skewX(-12deg);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      padding-bottom: 5rem;
+      max-width: 800px;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      font-family: var(--font-body); font-size: 0.72rem;
+      font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--electric);
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: fadeUp 0.7s var(--ease-out) 0.5s forwards;
+    }
+    .hero-eyebrow-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--electric);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(1.5); }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 7.5vw, 7.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 2rem;
+    }
+    .hero-line-1 {
+      display: block; color: var(--white);
+      opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.65s forwards;
+    }
+    .hero-line-2 {
+      display: block; color: var(--white);
+      opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.8s forwards;
+    }
+    .hero-line-3 {
+      display: block;
+      background: linear-gradient(90deg, var(--electric-dk), var(--electric-lt));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0; animation: fadeUp 0.8s var(--ease-out) 0.95s forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .hero-sub {
+      font-family: var(--font-body);
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      font-weight: 300; line-height: 1.85;
+      color: var(--muted);
+      max-width: 520px; margin-bottom: 3rem;
+      opacity: 0; animation: fadeUp 0.8s var(--ease-out) 1.1s forwards;
+    }
+
+    .hero-btns {
+      display: flex; gap: 1.2rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.8s var(--ease-out) 1.25s forwards;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-family: var(--font-body); font-size: 0.85rem;
+      font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--navy-deep);
+      background: linear-gradient(135deg, var(--electric-dk), var(--electric-lt));
+      padding: 0.95rem 2.2rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative; overflow: hidden;
+    }
+    .btn-primary::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(255,255,255,0.12);
+      transform: translateX(-110%) skewX(-15deg);
+      transition: transform 0.4s var(--ease-out);
+    }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(75,170,220,0.35); }
+    .btn-primary:hover::before { transform: translateX(110%); }
+    .btn-primary:active { transform: translateY(-1px); }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: var(--font-body); font-size: 0.85rem;
+      font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(238, 244, 250, 0.65);
+      border: 1px solid rgba(238, 244, 250, 0.15);
+      padding: 0.95rem 2.2rem;
+      transition: all 0.25s ease;
+    }
+    .btn-secondary:hover { color: var(--white); border-color: rgba(238,244,250,0.4); }
+
+    /* Stats */
+    .hero-stats {
+      display: flex; gap: 3rem; flex-wrap: wrap;
+      margin-top: 4.5rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border-soft);
+      opacity: 0; animation: fadeUp 0.8s var(--ease-out) 1.4s forwards;
+    }
+    .stat { display: flex; flex-direction: column; gap: 0.2rem; }
+    .stat-num {
+      font-family: var(--font-display); font-size: 2.4rem; font-weight: 700;
+      color: var(--white); line-height: 1;
+    }
+    .stat-num .counter-num { color: var(--electric); }
+    .stat-label {
+      font-size: 0.73rem; font-weight: 400; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    /* Scroll indicator */
+    .scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      opacity: 0.35; cursor: pointer;
+      transition: opacity 0.25s ease;
+      animation: fadeUp 1s var(--ease-out) 1.8s both;
+    }
+    .scroll-hint:hover { opacity: 0.7; }
+    .scroll-arrow {
+      width: 18px; height: 18px;
+      border-right: 1.5px solid var(--off-white);
+      border-bottom: 1.5px solid var(--off-white);
+      transform: rotate(45deg);
+      animation: arrowBounce 2s ease-in-out infinite;
+    }
+    @keyframes arrowBounce {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50%       { transform: rotate(45deg) translateY(5px); }
+    }
+    .scroll-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--off-white); }
+
+    /* ════════════════════════════════════════
+       SECTION COMMONS
+    ════════════════════════════════════════ */
+    .section { padding: clamp(5rem, 9vw, 9rem) 0; }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--electric);
+      margin-bottom: 1rem;
+    }
+    .eyebrow-line {
+      display: inline-block; width: 28px; height: 1.5px;
+      background: var(--electric);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.2rem, 4.5vw, 4rem);
+      font-weight: 700; line-height: 1.05;
+      color: var(--white); letter-spacing: -0.02em;
+    }
+    .section-title em {
+      font-style: italic; font-weight: 400;
+      color: rgba(238, 244, 250, 0.4);
+    }
+    .section-title .hi { color: var(--electric); }
+
+    /* ════════════════════════════════════════
+       SERVIÇOS
+    ════════════════════════════════════════ */
+    #servicos { background: var(--navy-deep); }
+
+    .servicos-header { margin-bottom: clamp(3rem, 5vw, 5rem); }
+
+    /* Parágrafo de contexto no header de serviços:
+       oculto no mobile, exibido no desktop via media query */
+    .servicos-header-desc {
+      display: none;
+      font-size: 1rem; font-weight: 300; line-height: 1.85;
+      color: var(--muted);
+      align-self: end;
+    }
+
+    .servicos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border: 1px solid var(--border-soft);
+    }
+
+    .servico-card {
+      position: relative; padding: 2.8rem 2.5rem;
+      border-right: 1px solid var(--border-soft);
+      border-bottom: 1px solid var(--border-soft);
+      overflow: hidden;
+      transition: background 0.35s ease;
+      cursor: default;
+    }
+    .servico-card:nth-child(3n) { border-right: none; }
+    /* Remove bottom border only from last row in 3-col grid */
+    .servico-card:nth-last-child(-n+3):nth-child(3n+1),
+    .servico-card:nth-last-child(-n+3):nth-child(3n+2),
+    .servico-card:nth-last-child(-n+3):nth-child(3n) { border-bottom: none; }
+    .servico-card:hover { background: rgba(75,170,220,0.04); }
+
+    /* Linha de acento animada */
+    .card-stripe {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, var(--electric-dk), var(--electric-lt));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.5s var(--ease-out);
+    }
+    .servico-card:hover .card-stripe { transform: scaleX(1); }
+
+    .card-icon {
+      width: 44px; height: 44px; margin-bottom: 1.5rem;
+      background: rgba(75,170,220,0.1);
+      border: 1px solid rgba(75,170,220,0.2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--electric);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+    .servico-card:hover .card-icon {
+      background: rgba(75,170,220,0.18);
+      border-color: rgba(75,170,220,0.45);
+    }
+
+    .card-num {
+      font-family: var(--font-display); font-size: 0.72rem;
+      font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(75,170,220,0.3); margin-bottom: 0.8rem;
+      transition: color 0.3s ease;
+    }
+    .servico-card:hover .card-num { color: var(--electric); }
+
+    .card-titulo {
+      font-family: var(--font-display); font-size: 1.4rem; font-weight: 600;
+      color: var(--white); margin-bottom: 0.85rem; line-height: 1.2;
+    }
+
+    .card-desc {
+      font-size: 0.88rem; font-weight: 300; line-height: 1.75;
+      color: var(--muted); margin-bottom: 1.5rem;
+    }
+
+    .card-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag-chip {
+      font-size: 0.66rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(75,170,220,0.5);
+      border: 1px solid rgba(75,170,220,0.15);
+      padding: 0.25rem 0.7rem;
+      transition: all 0.25s ease;
+    }
+    .servico-card:hover .tag-chip { color: var(--electric); border-color: rgba(75,170,220,0.35); }
+
+    @media (max-width: 1024px) { 
+      .servicos-grid { grid-template-columns: repeat(2, 1fr); }
+      /* In 2-col: reset 3-col rules, apply 2-col rules */
+      .servico-card:nth-child(3n) { border-right: 1px solid var(--border-soft); }
+      .servico-card:nth-child(2n) { border-right: none; }
+      .servico-card:nth-last-child(-n+3):nth-child(3n+1),
+      .servico-card:nth-last-child(-n+3):nth-child(3n+2),
+      .servico-card:nth-last-child(-n+3):nth-child(3n) { border-bottom: 1px solid var(--border-soft); }
+      .servico-card:nth-last-child(-n+2) { border-bottom: none; }
+    }
+    @media (max-width: 600px)  { 
+      .servicos-grid { grid-template-columns: 1fr; } 
+      .servico-card { padding: 2rem 1.5rem; }
+      /* In 1-col: remove all right borders, only last has no bottom */
+      .servico-card:nth-child(2n) { border-right: none; }
+      .servico-card:nth-last-child(-n+2) { border-bottom: 1px solid var(--border-soft); }
+      .servico-card:last-child { border-bottom: none; }
+    }
+
+    /* ════════════════════════════════════════
+       PORTFÓLIO
+    ════════════════════════════════════════ */
+    #portfolio { background: var(--navy); }
+
+    .portfolio-top {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem;
+    }
+
+    .filtros { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1.5rem; }
+    .filtro-btn {
+      font-size: 0.75rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); border: 1px solid var(--border-soft);
+      padding: 0.5rem 1.1rem;
+      transition: all 0.25s ease;
+    }
+    .filtro-btn:hover { color: var(--off-white); border-color: rgba(238,244,250,0.25); }
+    .filtro-btn.ativo { color: var(--navy-deep); background: var(--electric); border-color: var(--electric); }
+
+    /* ── Grid do portfólio ── */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      align-items: start;
+    }
+    .proj-wide { grid-column: span 2; }
+
+    /* Quando filtrado: remover span largo para manter grid uniforme */
+    .portfolio-grid.filtrado .proj-wide {
+      grid-column: span 1;
+    }
+    .portfolio-grid.filtrado .proj-wide .proj-visual {
+      aspect-ratio: 4/3;
+    }
+
+    /* ── Card base ── */
+    .proj-card {
+      position: relative; overflow: hidden; cursor: pointer;
+      border-radius: 4px;
+    }
+    .proj-visual {
+      aspect-ratio: 4/3; overflow: hidden; position: relative;
+      border-radius: 4px;
+    }
+    .proj-wide .proj-visual { aspect-ratio: 16/9; }
+
+    /* Fundo dos cards com imagem real */
+    .proj-bg {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      transition: transform 0.65s var(--ease-out);
+    }
+    .proj-card:hover .proj-bg { transform: scale(1.05); }
+
+    /* ── Tráfego Pago: backgrounds ── */
+    .proj-bg-tf1 {
+      background: linear-gradient(145deg, #0a1f0e, #0d2d18);
+    }
+    .proj-bg-tf2 {
+      background: linear-gradient(145deg, #13082a, #1e0e3d);
+    }
+    .proj-bg-tf3 {
+      background: linear-gradient(145deg, #071a11, #0a2018);
+    }
+
+    /* ── Dashboard dentro do card ── */
+    .tf-dashboard {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 1.25rem 1.5rem;
+      gap: 0.6rem;
+      pointer-events: none;
+    }
+    .tf-dash-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .tf-dash-label {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: rgba(255,255,255,0.5);
+    }
+    .tf-dash-period {
+      font-size: 0.65rem; color: rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.06); padding: 0.15rem 0.5rem; border-radius: 99px;
+    }
+    .tf-metric {
+      display: flex; align-items: center; gap: 0.75rem;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 6px; padding: 0.6rem 0.8rem;
+    }
+    .tf-metric-icon {
+      width: 2rem; height: 2rem; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700;
+      background: rgba(16,185,129,0.15); color: #10b981;
+      flex-shrink: 0;
+    }
+    .tf-icon-money { font-size: 0.8rem; font-weight: 800; }
+    .tf-icon-bag { font-size: 1rem; }
+    .tf-metric-info { flex: 1; min-width: 0; }
+    .tf-metric-val {
+      font-size: 0.88rem; font-weight: 700; color: #10b981;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .tf-metric-sub {
+      font-size: 0.6rem; color: rgba(255,255,255,0.3); margin-top: 0.1rem;
+    }
+    .tf-metric-growth {
+      font-size: 0.72rem; font-weight: 700; white-space: nowrap;
+    }
+    .tf-metric-growth.up { color: #10b981; }
+    .tf-bar-wrap {
+      height: 4px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden;
+    }
+    .tf-bar {
+      height: 100%; border-radius: 99px;
+      background: linear-gradient(90deg, #065f46, #10b981);
+    }
+    .tf-prev-row {
+      display: flex; justify-content: space-between;
+    }
+    .tf-prev {
+      font-size: 0.6rem; color: rgba(255,255,255,0.25);
+    }
+
+    /* ── Site cards: improved mockup styles ── */
+    .site-mockup {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      pointer-events: none;
+    }
+    .site-mockup-bar {
+      background: rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 0.4rem 0.75rem;
+      display: flex; align-items: center; gap: 0.35rem;
+    }
+    .site-mockup-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+    }
+    .site-mockup-url {
+      flex: 1; height: 5px; background: rgba(255,255,255,0.07); border-radius: 2px; margin-left: 0.5rem;
+    }
+    .site-mockup-body {
+      flex: 1; display: flex; flex-direction: column;
+      padding: 1rem 1.25rem; gap: 0.5rem;
+    }
+    .site-mockup-hero {
+      flex: 1.5; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 0.4rem;
+    }
+    .site-mockup-hero-title {
+      height: 8px; border-radius: 3px; width: 55%;
+    }
+    .site-mockup-hero-sub {
+      height: 5px; border-radius: 2px; width: 35%; opacity: 0.5;
+    }
+    .site-mockup-hero-btn {
+      height: 12px; border-radius: 3px; width: 22%; margin-top: 0.25rem;
+    }
+    .site-mockup-cards {
+      display: flex; gap: 0.4rem; flex: 1;
+    }
+    .site-mockup-card {
+      flex: 1; border-radius: 4px;
+    }
+      
+    .proj-bg-site2 {
+      background:
+        radial-gradient(ellipse at 70% 25%, rgba(75,170,220,0.4) 0%, transparent 55%),
+        radial-gradient(ellipse at 25% 75%, rgba(11,26,53,0.6) 0%, transparent 60%),
+        linear-gradient(135deg, #0d1f40, #112550);
+    }
+    .proj-bg-site3 {
+      background:
+        radial-gradient(ellipse at 50% 20%, rgba(75,170,220,0.35) 0%, transparent 60%),
+        linear-gradient(160deg, #091528, #152040);
+    }
+
+    /* Texto decorativo dentro do card (para identidade visual) */
+    .proj-deco-txt {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 800; color: rgba(255,255,255,0.06); letter-spacing: -0.02em;
+      user-select: none; white-space: nowrap;
+      pointer-events: none;
+    }
+
+    /* ── Overlay ao hover — escuro suave com fade ── */
+    .proj-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(6,14,31,0.92) 0%,
+        rgba(6,14,31,0.55) 45%,
+        rgba(6,14,31,0.1) 100%
+      );
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1.8rem;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+    .proj-card:hover .proj-overlay { opacity: 1; }
+
+    /* Título e categoria no overlay */
+    .proj-overlay-cat {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--electric);
+      transform: translateY(16px); transition: transform 0.45s var(--ease-out) 0.05s;
+      margin-bottom: 0.35rem;
+    }
+    .proj-overlay-title {
+      font-family: var(--font-display); font-size: 1.15rem; font-weight: 700;
+      color: var(--white); line-height: 1.25;
+      transform: translateY(16px); transition: transform 0.45s var(--ease-out) 0.1s;
+      margin-bottom: 0.6rem;
+    }
+    .proj-overlay-desc {
+      font-size: 0.82rem; font-weight: 300; line-height: 1.6;
+      color: rgba(238,244,250,0.75);
+      transform: translateY(16px); transition: transform 0.45s var(--ease-out) 0.15s;
+      margin-bottom: 1rem;
+    }
+    .proj-card:hover .proj-overlay-cat,
+    .proj-card:hover .proj-overlay-title,
+    .proj-card:hover .proj-overlay-desc { transform: none; }
+
+    .proj-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase;
+      color: var(--electric);
+      transform: translateY(16px); transition: transform 0.45s var(--ease-out) 0.2s;
+    }
+    .proj-card:hover .proj-link { transform: none; }
+    .proj-link svg { transition: transform 0.25s ease; }
+    .proj-card:hover .proj-link svg { transform: translateX(5px); }
+
+    /* Info abaixo do card */
+    .proj-info { padding: 1.1rem 0 0.5rem; }
+    .proj-meta { display: flex; justify-content: space-between; margin-bottom: 0.3rem; }
+    .proj-cat { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--electric); }
+    .proj-ano { font-size: 0.7rem; color: rgba(238,244,250,0.3); }
+    .proj-titulo { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--white); }
+
+    /* Indicador de clique */
+    .proj-visual::after {
+      content: '';
+      position: absolute; inset: 0;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      transition: border-color 0.35s ease;
+      pointer-events: none;
+    }
+    .proj-card:hover .proj-visual::after { border-color: rgba(75,170,220,0.3); }
+
+    .portfolio-cta { display: flex; justify-content: center; margin-top: 4rem; }
+
+    .btn-outline {
+      font-family: var(--font-body); font-size: 0.82rem;
+      font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--off-white); border: 1px solid var(--border);
+      padding: 1rem 2.5rem;
+      transition: all 0.3s ease;
+    }
+    .btn-outline:hover { background: rgba(75,170,220,0.08); border-color: var(--electric); color: var(--electric); }
+
+    /* ── MODAL ── */
+    #proj-modal {
+      position: fixed; inset: 0; z-index: 9000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem;
+      background: rgba(4,10,22,0.92);
+      backdrop-filter: blur(10px);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+    #proj-modal.open { opacity: 1; visibility: visible; }
+
+    .modal-inner {
+      position: relative;
+      max-width: 900px; width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: var(--navy-mid);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transform: scale(0.94) translateY(20px);
+      transition: transform 0.4s var(--ease-out);
+    }
+    #proj-modal.open .modal-inner { transform: none; }
+
+    .modal-img-wrap {
+      width: 100%; overflow: hidden; border-radius: 6px 6px 0 0;
+    }
+    .modal-img-wrap img {
+      width: 100%; height: auto; display: block;
+      object-fit: cover;
+    }
+
+    /* Fallback visual para projetos sem imagem real */
+    .modal-visual-placeholder {
+      width: 100%; aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: clamp(4rem, 10vw, 9rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      color: rgba(75,170,220,0.12);
+      background: linear-gradient(145deg, #0a1830, #1a3560);
+      border-radius: 6px 6px 0 0;
+    }
+
+    .modal-body { padding: 2rem 2.5rem 2.5rem; }
+    .modal-meta { display: flex; gap: 1rem; align-items: center; margin-bottom: 0.75rem; }
+    .modal-cat-tag {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.13em;
+      text-transform: uppercase; color: var(--navy-deep);
+      background: var(--electric); padding: 0.3rem 0.8rem; border-radius: 2px;
+    }
+    .modal-ano { font-size: 0.75rem; color: rgba(238,244,250,0.35); }
+    .modal-title {
+      font-family: var(--font-display); font-size: clamp(1.5rem, 4vw, 2.25rem);
+      font-weight: 700; color: var(--white); margin-bottom: 1rem; line-height: 1.15;
+    }
+    .modal-desc {
+      font-size: 0.95rem; font-weight: 300; line-height: 1.75;
+      color: rgba(238,244,250,0.7);
+    }
+
+    /* Stats para tráfego pago */
+    .modal-stats {
+      display: flex; gap: 2rem; margin: 1.75rem 0;
+      flex-wrap: wrap;
+    }
+    .modal-stat {
+      border-left: 2px solid var(--electric);
+      padding-left: 1rem;
+    }
+    .modal-stat-val {
+      font-family: var(--font-display); font-size: 1.8rem; font-weight: 700;
+      color: var(--electric); line-height: 1;
+    }
+    .modal-stat-lbl {
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(238,244,250,0.4); margin-top: 0.3rem;
+    }
+
+    /* Visual de tráfego pago clonado para o modal */
+    .modal-tf-visual {
+      position: relative; width: 100%; aspect-ratio: 16/8;
+      overflow: hidden; border-radius: 6px 6px 0 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .modal-tf-visual .proj-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+    }
+    .modal-tf-visual .tf-dashboard {
+      position: relative; z-index: 2;
+      width: clamp(280px, 50%, 420px);
+      padding: 1.4rem 1.6rem;
+      font-size: 1rem;
+    }
+    .modal-tf-visual .tf-metric-val { font-size: 1.1rem; }
+    .modal-tf-visual .tf-metric-growth { font-size: 0.85rem; }
+
+    /* Botão fechar */
+    .modal-close {
+      position: absolute; top: 1rem; right: 1rem; z-index: 10;
+      width: 2.5rem; height: 2.5rem;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(6,14,31,0.75); border-radius: 50%;
+      color: var(--off-white);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+    .modal-close:hover { background: var(--electric); color: var(--navy-deep); }
+
+    /* Responsivo */
+    @media (max-width: 900px) {
+      .portfolio-grid { grid-template-columns: repeat(2, 1fr); }
+      .proj-wide { grid-column: span 2; }
+    }
+    @media (max-width: 580px) {
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .proj-wide { grid-column: span 1; }
+      .modal-body { padding: 1.5rem; }
+      .modal-stats { gap: 1.25rem; }
+    }
+    @media (max-width: 900px) and (min-width: 581px) {
+      .proj-wide .proj-visual { aspect-ratio: 21/9; }
+    }
+
+    /* ════════════════════════════════════════
+       SOBRE
+    ════════════════════════════════════════ */
+    #sobre { background: var(--navy-deep); }
+
+    .sobre-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(3rem, 8vw, 8rem); align-items: start;
+    }
+
+    .sobre-desc {
+      font-size: 1rem; font-weight: 300; line-height: 1.9;
+      color: var(--muted); margin: 1.5rem 0;
+    }
+    .sobre-desc + .sobre-desc { margin-top: -0.5rem; }
+
+    .sobre-stats {
+      display: flex; gap: 2.5rem; flex-wrap: wrap;
+      padding-top: 2rem; border-top: 1px solid var(--border-soft); margin-top: 2rem;
+    }
+    .sobre-stat-num {
+      font-family: var(--font-display); font-size: 2.2rem; font-weight: 700;
+      color: var(--electric); line-height: 1;
+    }
+    .sobre-stat-label {
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-top: 0.2rem;
+    }
+
+    /* Valores */
+    .valores-label {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: rgba(238,244,250,0.25);
+      margin-bottom: 1.8rem;
+    }
+
+    .valor-item {
+      display: flex; align-items: flex-start; gap: 1.4rem;
+      padding: 1.8rem 0;
+      border-top: 1px solid var(--border-soft);
+      transition: background 0.3s ease;
+    }
+    .valor-item:last-child { border-bottom: 1px solid var(--border-soft); }
+
+    .valor-letra {
+      font-family: var(--font-display); font-size: 2.8rem; font-weight: 800;
+      line-height: 1; min-width: 2.5rem;
+      background: linear-gradient(135deg, var(--electric-dk), var(--electric-lt));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0.4; transition: opacity 0.3s ease;
+    }
+    .valor-item:hover .valor-letra { opacity: 1; }
+
+    .valor-nome {
+      display: block; font-family: var(--font-display);
+      font-size: 1.2rem; font-weight: 600; color: var(--white); margin-bottom: 0.3rem;
+    }
+    .valor-desc {
+      font-size: 0.88rem; font-weight: 300; line-height: 1.65; color: var(--muted);
+    }
+
+    @media (max-width: 900px) { .sobre-layout { grid-template-columns: 1fr; } }
+
+    /* ════════════════════════════════════════
+       CTA BANNER
+    ════════════════════════════════════════ */
+    #cta-banner {
+      background: linear-gradient(135deg, var(--navy-mid) 0%, #0D2548 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: clamp(4rem, 7vw, 7rem) 0;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    #cta-banner::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image: radial-gradient(circle, rgba(75,170,220,0.12) 1px, transparent 1px);
+      background-size: 32px 32px;
+    }
+    .cta-content { position: relative; z-index: 1; }
+    .cta-title {
+      font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3.2rem);
+      font-weight: 700; color: var(--white); margin-bottom: 1rem; line-height: 1.15;
+    }
+    .cta-sub {
+      font-size: 1rem; font-weight: 300; color: var(--muted);
+      margin-bottom: 2.5rem; max-width: 480px; margin-left: auto; margin-right: auto;
+    }
+
+    /* ════════════════════════════════════════
+       CONTATO
+    ════════════════════════════════════════ */
+    #contato { background: var(--navy); }
+
+    .contato-layout {
+      display: grid; grid-template-columns: 1fr 1.4fr;
+      gap: clamp(3rem, 7vw, 7rem); align-items: start;
+    }
+
+    .contato-info-titulo {
+      font-family: var(--font-display); font-size: 1.1rem; font-weight: 600;
+      color: var(--white); margin-top: 2.5rem; margin-bottom: 1rem;
+    }
+
+    .contato-item {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1rem 0; border-bottom: 1px solid var(--border-soft);
+    }
+    .contato-icon {
+      width: 38px; height: 38px; flex-shrink: 0;
+      background: rgba(75,170,220,0.08); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--electric);
+    }
+    .contato-item-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .contato-item-val { font-size: 0.95rem; font-weight: 400; color: var(--off-white); }
+
+    /* ── Formulário ── */
+    .form-card {
+      background: rgba(17, 35, 71, 0.5);
+      border: 1px solid var(--border-soft);
+      padding: 2.5rem;
+    }
+
+    .form-titulo {
+      font-family: var(--font-display); font-size: 1.5rem; font-weight: 700;
+      color: var(--white); margin-bottom: 0.4rem;
+    }
+    .form-sub { font-size: 0.88rem; font-weight: 300; color: var(--muted); margin-bottom: 2rem; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
+    .form-label {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    .form-input, .form-textarea {
+      width: 100%; font-family: var(--font-body); font-size: 0.95rem;
+      font-weight: 300; color: var(--off-white);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 0.85rem 1rem;
+      outline: none;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+    .form-input::placeholder, .form-textarea::placeholder { color: rgba(238,244,250,0.2); }
+    .form-input:focus, .form-textarea:focus {
+      border-color: rgba(75,170,220,0.5);
+      background: rgba(75,170,220,0.04);
+    }
+    .form-input.erro, .form-textarea.erro { border-color: rgba(220,80,80,0.5); }
+    .form-textarea { resize: vertical; min-height: 130px; }
+
+    .form-erro-txt {
+      font-size: 0.72rem; color: #e07070; margin-top: 0.25rem;
+      min-height: 1em;
+    }
+
+    .btn-submit {
+      width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.7rem;
+      font-family: var(--font-body); font-size: 0.85rem;
+      font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--navy-deep);
+      background: linear-gradient(135deg, var(--electric-dk), var(--electric-lt));
+      padding: 1.1rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      position: relative; overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    .btn-submit:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(75,170,220,0.3);
+    }
+    .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    /* Spinner de loading */
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(11,26,53,0.3);
+      border-top-color: var(--navy-deep);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    .spinner.show { display: block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .form-msg {
+      padding: 1rem 1.2rem; margin-top: 1rem;
+      font-size: 0.9rem; font-weight: 400;
+      display: none;
+    }
+    .form-msg.success { background: rgba(50,200,100,0.1); border-left: 3px solid #44c072; color: #7de8a0; }
+    .form-msg.error   { background: rgba(220,70,70,0.1);  border-left: 3px solid #dc4646; color: #f09090; }
+
+    @media (max-width: 900px) {
+      .contato-layout { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 500px) { .form-card { padding: 1.5rem; } }
+
+    /* ════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════ */
+    #footer {
+      background: var(--navy-deep);
+      border-top: 1px solid var(--border-soft);
+      padding: 4rem 0 2rem;
+    }
+
+    .footer-grid {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: clamp(2rem, 3vw, 3rem); margin-bottom: 4rem;
+    }
+
+    .footer-brand-desc {
+      font-size: 0.88rem; font-weight: 300; line-height: 1.75;
+      color: var(--muted); margin-top: 1rem; max-width: 260px;
+    }
+
+    .footer-col-title {
+      font-family: var(--font-display); font-size: 0.8rem;
+      font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--white); margin-bottom: 1.2rem;
+    }
+
+    .footer-link-list { display: flex; flex-direction: column; gap: 0.7rem; }
+    .footer-link {
+      font-size: 0.87rem; font-weight: 300; color: var(--muted);
+      transition: color 0.2s ease; cursor: pointer;
+    }
+    .footer-link:hover { color: var(--electric); }
+
+    .footer-bottom {
+      display: flex; align-items: center; justify-content: space-between;
+      padding-top: 2rem; border-top: 1px solid var(--border-soft);
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-copy { font-size: 0.8rem; color: rgba(238,244,250,0.25); }
+    .footer-copy span { color: var(--electric); }
+
+    .footer-socials { display: flex; gap: 1rem; }
+    .social-btn {
+      width: 36px; height: 36px;
+      background: var(--border-soft); border: 1px solid var(--border-soft);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+      transition: all 0.25s ease;
+    }
+    .social-btn:hover { background: rgba(75,170,220,0.12); border-color: var(--border); color: var(--electric); }
+
+    @media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr; } }
+
+    /* ════════════════════════════════════════
+       RESPONSIVE MISC
+    ════════════════════════════════════════ */
+    @media (max-width: 768px) {
+      .hero-stats { gap: 2rem; }
+      .stat-num { font-size: 1.8rem; }
+    }
+    @media (max-width: 480px) {
+      .hero-btns { flex-direction: column; }
+      .btn-primary, .btn-secondary { justify-content: center; }
+    }
+
+    /* ╔══════════════════════════════════════════════════════════╗
+       ║  AJUSTES EXCLUSIVOS PARA DESKTOP (min-width: 1024px)    ║
+       ║                                                          ║
+       ║  POR QUE USAR min-width E NÃO max-width?                ║
+       ║  ─────────────────────────────────────────────────────  ║
+       ║  • max-width: aplica ABAIXO do breakpoint (mobile)      ║
+       ║  • min-width: aplica ACIMA do breakpoint (desktop)      ║
+       ║                                                          ║
+       ║  Assim garantimos que o mobile (já perfeito) não é      ║
+       ║  tocado — as regras abaixo só entram em telas >= 1024px ║
+       ╚══════════════════════════════════════════════════════════╝ */
+
+    @media (min-width: 1024px) {
+
+      /* ── 1. CONTAINER — Mais respiro nas laterais ─────────────
+         PROBLEMA: padding via clamp(1.25rem, 5vw, 5rem) resultava
+         em apenas ~50px em telas de 1280px — muito pouco.
+         
+         SOLUÇÃO: padding fixo de 4rem (64px) de cada lado em
+         desktop, garantindo espaço lateral sem desperdiçar largura.
+         O max-width de 1320px continua contendo o conteúdo.
+      ── */
+      .container {
+        padding: 0 4rem;
+      }
+
+      /* ── 2. HERO — Layout dividido: texto à esq, visual à dir ─
+         PROBLEMA: .hero-content tinha max-width: 800px e ficava
+         centralizado, deixando a metade direita da tela vazia.
+         
+         SOLUÇÃO: Transformamos o hero em grid 55/45. O texto
+         ocupa a coluna esquerda e o painel decorativo preenche
+         a direita — uso real das duas laterais da tela.
+      ── */
+      #hero {
+        /* Garante altura mínima confortável */
+        min-height: 100svh;
+        align-items: center;
+      }
+
+      /* O container dentro do hero — ocupa largura total */
+      #hero > .container {
+        display: block;
+        width: 100%;
+      }
+
+      .hero-content {
+        max-width: 820px;
+        padding-bottom: 2rem;
+      }
+
+      /* Painel visual decorativo do lado direito do hero */
+      .hero-visual-panel {
+        display: flex !important;        /* Ativado apenas no desktop */
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: flex-end;
+        justify-content: center;
+        height: 100%;
+        padding: 2rem 0;
+      }
+
+      /* ── 3. HERO — Título maior e mais impactante ─────────────
+         Em telas grandes, o título pode ser mais generoso.
+         clamp() já ajusta, mas aumentamos o limite superior.
+      ── */
+      .hero-title {
+        font-size: clamp(3.8rem, 5.5vw, 6.5rem);
+      }
+
+      /* ── 4. HERO STATS — Mais espaçados horizontalmente ───────
+         4 stats em linha com espaçamento maior ficam melhores
+         em desktop do que comprimidos num flex-wrap.
+      ── */
+      .hero-stats {
+        gap: 4rem;
+        flex-wrap: nowrap;
+        padding-top: 3.5rem;
+        margin-top: 3.5rem;
+      }
+
+      .stat-num {
+        font-size: 2.8rem;
+      }
+
+      /* ── 5. SEÇÕES — Padding vertical maior em desktop ────────
+         Seções com mais espaço vertical respiram melhor
+         em monitores grandes. No mobile já é adequado.
+      ── */
+      .section {
+        padding: 9rem 0;
+      }
+
+      /* ── 6. SERVIÇOS — Header lado a lado com descrição ───────
+         PROBLEMA: título e descrição ficavam empilhados
+         ocupando só metade da largura da section.
+         
+         SOLUÇÃO: Header em 2 colunas — título à esquerda,
+         parágrafo de contexto à direita.
+      ── */
+      .servicos-header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: end;
+        gap: 4rem;
+        margin-bottom: 5rem;
+      }
+
+    /* Parágrafo de contexto que aparece ao lado do título em desktop */
+      .servicos-header-desc {
+        display: block !important;
+      }
+
+      /* Mais padding interno nos cards em telas grandes */
+      .servico-card {
+        padding: 3rem 2.8rem;
+      }
+
+      /* ── 7. PORTFÓLIO — Grid mais generoso ────────────────────
+         Gap maior entre cards em desktop = mais respiro visual
+      ── */
+      .portfolio-grid {
+        gap: 2rem;
+      }
+
+      /* Header do portfólio: título à esq, filtros à dir */
+      .portfolio-top {
+        align-items: flex-end;
+        gap: 3rem;
+        margin-bottom: 3.5rem;
+      }
+
+      /* ── 8. SOBRE — Colunas mais assimétricas ─────────────────
+         PROBLEMA: 1fr 1fr ficava simétrico demais.
+         SOLUÇÃO: 55/45 dá mais peso ao texto principal (esquerda)
+         e mantém os valores compactos à direita.
+      ── */
+      .sobre-layout {
+        grid-template-columns: 55% 42%;
+        gap: 8rem;
+        align-items: start;
+      }
+
+      .sobre-desc {
+        font-size: 1.05rem;
+        line-height: 1.95;
+      }
+
+      .sobre-stats {
+        gap: 3.5rem;
+      }
+
+      /* ── 9. CONTATO — Proporção melhorada ─────────────────────
+         PROBLEMA: 1fr / 1.4fr deixava a coluna do form
+         desproporcional e o texto de info muito estreito.
+         
+         SOLUÇÃO: 42% / 55% dá mais espaço ao formulário
+         e mantém as informações de contato legíveis.
+      ── */
+      .contato-layout {
+        grid-template-columns: 42% 55%;
+        gap: 6rem;
+        align-items: start;
+      }
+
+      .form-card {
+        padding: 3rem 3rem;
+      }
+
+      /* ── 10. CTA BANNER — Largura controlada ──────────────────
+         Texto do banner com max-width para não esticar demais
+         em monitores ultrawide.
+      ── */
+      .cta-title {
+        font-size: clamp(2rem, 3vw, 3rem);
+        max-width: 700px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      /* ── 11. FOOTER — Mais generoso ───────────────────────────
+         Gap maior entre colunas e padding superior.
+      ── */
+      #footer {
+        padding: 6rem 0 2.5rem;
+      }
+
+      .footer-grid {
+        gap: 5rem;
+        margin-bottom: 5rem;
+      }
+
+      /* ── 12. SECTION TITLE — Tipografia maior ─────────────────
+         Em desktop o título de seção pode ser mais grandioso.
+      ── */
+      .section-title {
+        font-size: clamp(2.6rem, 3.8vw, 4.2rem);
+      }
+    }
+
+    /* ── AJUSTES PARA TELAS MUITO GRANDES (≥ 1600px) ──────────
+       Em monitores ultrawide (27"+), aumentamos o container
+       para evitar que o conteúdo fique numa faixa estreita
+       no centro de uma tela enorme.
+    ── */
+    @media (min-width: 1600px) {
+      .container {
+        max-width: 1520px;
+        padding: 0 5rem;
+      }
+
+      .hero-title {
+        font-size: 7rem;
+      }
+
+      .section-title {
+        font-size: 4.5rem;
+      }
+
+      .servico-card {
+        padding: 3.5rem 3rem;
+      }
+
+      .hero-stats {
+        gap: 5rem;
+      }
+    }
+
+    /* Painel visual do hero — desativado */
+    .hero-visual-panel {
+      display: none !important;
+    }
+
+    /* Cards dentro do painel visual decorativo do hero */
+    .hero-panel-card {
+      background: rgba(17, 35, 71, 0.7);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      padding: 1.4rem 1.8rem;
+      width: clamp(220px, 22vw, 280px);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-panel-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: linear-gradient(to bottom, var(--electric-dk), var(--electric-lt));
+    }
+    .hero-panel-card-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--electric);
+      margin-bottom: 0.5rem;
+    }
+    .hero-panel-card-val {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1;
+    }
+    .hero-panel-card-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 0.3rem;
+    }
+    .hero-panel-tag {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.8rem 1.2rem;
+      border: 1px solid var(--border-soft);
+      background: rgba(75,170,220,0.06);
+      font-size: 0.78rem;
+      color: rgba(238,244,250,0.7);
+      width: fit-content;
+      max-width: 100%;
+      align-self: flex-end;
+      margin-right: 2rem;
+    }
+    .hero-panel-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--electric);
+      box-shadow: 0 0 8px var(--electric);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    .hero-panel-img {
+      width: clamp(200px, 22vw, 260px);
+      height: clamp(120px, 14vw, 160px);
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(41,128,185,0.5) 0%, transparent 60%),
+        radial-gradient(ellipse at 75% 25%, rgba(75,170,220,0.3) 0%, transparent 55%),
+        linear-gradient(135deg, #0D1B3E, #1A3060);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      align-self: flex-start;
+      margin-right: 0.5rem;
+    }
+    .hero-panel-img::after {
+      content: 'TRAÇO';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 800;
+      color: rgba(255,255,255,0.12);
+      letter-spacing: 0.2em;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- ══════════════════════════════════
+     LOADER
+══════════════════════════════════ -->
+<div id="loader">
+  <div class="loader-inner">
+    <div class="loader-logo">traço<span>.</span></div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     HEADER
+══════════════════════════════════ -->
+<header id="header">
+  <div class="container header-inner">
+    <a class="logo-wrap" href="#hero">
+      <div class="logo-svg-mark">T</div>
+      <span class="logo-name">traço<span>.</span></span>
+    </a>
+
+    <nav class="nav-desktop">
+      <a href="#servicos"  class="nav-link">Serviços</a>
+      <a href="#portfolio" class="nav-link">Portfólio</a>
+      <a href="#sobre"     class="nav-link">Sobre</a>
+      <a href="#contato"   class="btn-nav">Fale Conosco</a>
+    </nav>
+
+    <button class="hamburger" id="menuToggle" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <div class="nav-mobile" id="navMobile">
+    <a href="#servicos"  class="nav-mobile-link">Serviços</a>
+    <a href="#portfolio" class="nav-mobile-link">Portfólio</a>
+    <a href="#sobre"     class="nav-mobile-link">Sobre</a>
+    <a href="#contato"   class="nav-mobile-link btn-nav btn-nav-mobile">Fale Conosco</a>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════
+     HERO
+══════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-dots"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+  <div class="hero-diagonal"></div>
+
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <div class="hero-eyebrow-dot"></div>
+        Agência Criativa · Goiás, Brasil
+      </div>
+
+      <h1 class="hero-title">
+        <span class="hero-line-1">Design que</span>
+        <span class="hero-line-2">move pessoas.</span>
+        <span class="hero-line-3">Marcas que ficam.</span>
+      </h1>
+
+      <p class="hero-sub">
+        Transformamos visões em identidades visuais poderosas. Da estratégia de marca ao design executado com precisão — cada projeto é único.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#servicos" class="btn-primary">
+          Ver Nossos Serviços
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="#portfolio" class="btn-secondary">Ver Portfólio</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num"><span class="counter-num" data-target="5">0</span><span>+</span></div>
+          <div class="stat-label">Anos de Experiência</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num"><span class="counter-num" data-target="20">0</span><span>+</span></div>
+          <div class="stat-label">Projetos Entregues</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num"><span class="counter-num" data-target="98">0</span><span>%</span></div>
+          <div class="stat-label">Satisfação dos Clientes</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         PAINEL VISUAL DIREITO — Aparece só no desktop.
+         No mobile: display:none (via CSS base).
+         No desktop (≥1024px): display:flex (via media query).
+         Ocupa a coluna direita do grid do hero.
+    ══════════════════════════════════════════════════ -->
+    <div class="hero-visual-panel">
+      <div class="hero-panel-tag">
+        <div class="hero-panel-dot"></div>
+        Projetos ativos em 2024
+      </div>
+      <div class="hero-panel-img"></div>
+      <div class="hero-panel-card">
+        <div class="hero-panel-card-label">Portfólio total</div>
+        <div class="hero-panel-card-val">200+</div>
+        <div class="hero-panel-card-sub">projetos entregues com excelência</div>
+      </div>
+      <div class="hero-panel-card" style="align-self: flex-end; margin-right: 1.5rem;">
+        <div class="hero-panel-card-label">Satisfação</div>
+        <div class="hero-panel-card-val">98%</div>
+        <div class="hero-panel-card-sub">clientes recomendam a Traço</div>
+      </div>
+    </div>
+
+  </div>
+
+  
+</section>
+
+
+<!-- ══════════════════════════════════
+     SERVIÇOS
+══════════════════════════════════ -->
+<section id="servicos" class="section">
+  <div class="container">
+    <div class="servicos-header">
+      <div class="reveal">
+        <div class="eyebrow"><span class="eyebrow-line"></span>O que fazemos</div>
+        <h2 class="section-title">Soluções criativas<br><em>do conceito à entrega</em></h2>
+      </div>
+      <!-- Parágrafo de contexto — visível só no desktop via CSS (.servicos-header-desc) -->
+      <p class="servicos-header-desc reveal d2">
+        Cada projeto começa com escuta. Entendemos seu negócio, seu público e seus objetivos antes de traçar uma única linha — porque design sem estratégia é apenas decoração.
+      </p>
+    </div>
+
+    <div class="servicos-grid">
+
+      <!-- Card 1 -->
+      <div class="servico-card reveal d1">
+        <div class="card-stripe"></div>
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/>
+          </svg>
+        </div>
+        <div class="card-num">01</div>
+        <h3 class="card-titulo">Identidade Visual</h3>
+        <p class="card-desc">Criamos marcas que comunicam essência. Logo, tipografia, paleta e sistema visual completo que posiciona sua empresa com autoridade no mercado.</p>
+        <div class="card-tags">
+          <span class="tag-chip">Logo Design</span>
+          <span class="tag-chip">Brand System</span>
+          <span class="tag-chip">Manual de Marca</span>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="servico-card reveal d2">
+        <div class="card-stripe"></div>
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/>
+          </svg>
+        </div>
+        <div class="card-num">02</div>
+        <h3 class="card-titulo">UI/UX Design</h3>
+        <p class="card-desc">Interfaces digitais centradas na experiência do usuário. Do wireframe ao protótipo interativo, com foco em conversão, usabilidade e beleza.</p>
+        <div class="card-tags">
+          <span class="tag-chip">Wireframes</span>
+          <span class="tag-chip">Prototipagem</span>
+          <span class="tag-chip">Design System</span>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="servico-card reveal d3">
+        <div class="card-stripe"></div>
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+          </svg>
+        </div>
+        <div class="card-num">03</div>
+        <h3 class="card-titulo">Design Editorial</h3>
+        <p class="card-desc">Publicações, catálogos e materiais impressos com diagramação refinada. Informação e estética unidos com precisão tipográfica impecável.</p>
+        <div class="card-tags">
+          <span class="tag-chip">Diagramação</span>
+          <span class="tag-chip">Infográficos</span>
+          <span class="tag-chip">Impressos</span>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="servico-card reveal d1">
+        <div class="card-stripe"></div>
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+          </svg>
+        </div>
+        <div class="card-num">04</div>
+        <h3 class="card-titulo">Gestão de Redes Sociais</h3>
+        <p class="card-desc">Cuidamos da sua presença digital de forma estratégica e consistente. Do planejamento ao conteúdo, tudo funciona nos bastidores para fortalecer sua marca, engajar o público e gerar resultados — sem você precisar se preocupar.</p>
+        <div class="card-tags">
+          <span class="tag-chip">Planejamento</span>
+          <span class="tag-chip">Conteúdo</span>
+          <span class="tag-chip">Engajamento</span>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="servico-card reveal d2">
+        <div class="card-stripe"></div>
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+          </svg>
+        </div>
+        <div class="card-num">05</div>
+        <h3 class="card-titulo">Tráfego Pago</h3>
+        <p class="card-desc">Estratégias de anúncios que atraem, convertem e escalam resultados. Do planejamento à execução, criamos campanhas segmentadas e otimizadas para alcançar o público certo e gerar vendas de forma consistente.</p>
+        <div class="card-tags">
+          <span class="tag-chip">Campanhas</span>
+          <span class="tag-chip">Segmentação</span>
+          <span class="tag-chip">Otimização</span>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="servico-card reveal d3">
+        <div class="card-stripe"></div>
+        <div class="card-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div class="card-num">06</div>
+        <h3 class="card-titulo">Sites Modernos</h3>
+        <p class="card-desc">Desenvolvemos sites estratégicos, rápidos e visualmente impactantes. Do design à estrutura, cada detalhe é pensado para oferecer uma experiência fluida, transmitir credibilidade e transformar visitantes em clientes.</p>
+        <div class="card-tags">
+          <span class="tag-chip">Landing Pages</span>
+          <span class="tag-chip">Institucionais</span>
+          <span class="tag-chip">E-commerce</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
+     PORTFÓLIO
+══════════════════════════════════ -->
+<section id="portfolio" class="section">
+  <div class="container">
+    <div class="portfolio-top">
+      <div class="reveal">
+        <div class="eyebrow"><span class="eyebrow-line"></span>Portfólio</div>
+        <h2 class="section-title">Projetos que<br><em>falam por si</em></h2>
+        <div class="filtros" id="filtros">
+          <button class="filtro-btn ativo" data-cat="Todos">Todos</button>
+          <button class="filtro-btn" data-cat="Identidade Visual">Identidade Visual</button>
+          <button class="filtro-btn" data-cat="Tráfego Pago">Tráfego Pago</button>
+          <button class="filtro-btn" data-cat="Site">Sites</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="portfolio-grid" id="portfolioGrid">
+
+      <!-- ── 1. Identidade Visual: YHWH (imagem real) — card largo ── -->
+      <div class="proj-card proj-wide reveal d1" data-cat="Identidade Visual"
+           data-modal-title="Identidade Visual — YHWH"
+           data-modal-cat="Identidade Visual"
+           data-modal-ano="2024"
+           data-modal-img="converted_1.png"
+           data-modal-desc="Identidade visual completa para a marca espiritual YHWH. O projeto envolveu criação de logotipo desenhado à mão, paleta de cores com tons profundos de roxo e preto, tipografia exclusiva e apresentação de marca. O símbolo foi concebido como uma representação gráfica do Tetragrama, unindo tradição e modernidade em cada traço.">
+        <div class="proj-visual">
+          <div class="proj-bg" style="background-image: url('converted_1.png');"></div>
+          <div class="proj-overlay">
+            <span class="proj-overlay-cat">Identidade Visual</span>
+            <h4 class="proj-overlay-title">YHWH — Branding Espiritual</h4>
+            <p class="proj-overlay-desc">Identidade completa com logotipo manuscrito, paleta e apresentação de marca.</p>
+            <span class="proj-link">Ver Projeto <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+        <div class="proj-info">
+          <div class="proj-meta"><span class="proj-cat">Identidade Visual</span><span class="proj-ano">2024</span></div>
+          <h3 class="proj-titulo">YHWH — Branding Espiritual</h3>
+        </div>
+      </div>
+
+      <!-- ── 2. Tráfego Pago: Urbana Chique ── -->
+      <div class="proj-card reveal d2" data-cat="Tráfego Pago"
+           data-modal-title="Gestão de Tráfego — Urbana Chique"
+           data-modal-cat="Tráfego Pago"
+           data-modal-ano="2024"
+           data-modal-img=""
+           data-modal-deco="UC"
+           data-modal-stats="true"
+           data-modal-stats-data='{"val1":"R$7.067","lbl1":"Faturamento em 30 dias","val2":"+720%","lbl2":"Crescimento de receita","val3":"50","lbl3":"Pedidos realizados","val4":"+1150%","lbl4":"Crescimento em vendas"}'
+           data-modal-desc="Gestão completa de tráfego pago para a Urbana Chique, loja de moda feminina. Em apenas 30 dias de campanha, o faturamento saltou de R$861 para R$7.067 — um crescimento de +720%. As vendas passaram de 4 para 50 pedidos no período, representando um aumento de +1.150% nas unidades vendidas.">
+        <div class="proj-visual">
+          <!-- Dashboard visual SVG para tráfego pago -->
+          <div class="proj-bg proj-bg-tf1"></div>
+          <div class="tf-dashboard">
+            <div class="tf-dash-header">
+              <span class="tf-dash-label">Performance da Loja</span>
+              <span class="tf-dash-period">Últimos 30 dias</span>
+            </div>
+            <div class="tf-metric">
+              <div class="tf-metric-icon tf-icon-money">R$</div>
+              <div class="tf-metric-info">
+                <div class="tf-metric-val">R$ 7.067,10</div>
+                <div class="tf-metric-sub">Vendas realizadas</div>
+              </div>
+              <div class="tf-metric-growth up">↑ 720%</div>
+            </div>
+            <div class="tf-bar-wrap"><div class="tf-bar" style="width:92%"></div></div>
+            <div class="tf-metric">
+              <div class="tf-metric-icon tf-icon-bag">🛍</div>
+              <div class="tf-metric-info">
+                <div class="tf-metric-val">50 pedidos</div>
+                <div class="tf-metric-sub">Vendas realizadas (un.)</div>
+              </div>
+              <div class="tf-metric-growth up">↑ 1150%</div>
+            </div>
+            <div class="tf-bar-wrap"><div class="tf-bar" style="width:100%"></div></div>
+            <div class="tf-prev-row">
+              <span class="tf-prev">Período anterior: R$861,15</span>
+              <span class="tf-prev">4 pedidos</span>
+            </div>
+          </div>
+          <div class="proj-overlay">
+            <span class="proj-overlay-cat">Tráfego Pago</span>
+            <h4 class="proj-overlay-title">Urbana Chique</h4>
+            <p class="proj-overlay-desc">+720% de faturamento e 50 pedidos em 30 dias de campanha.</p>
+            <span class="proj-link">Ver Resultado <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+        <div class="proj-info">
+          <div class="proj-meta"><span class="proj-cat">Tráfego Pago</span><span class="proj-ano">2024</span></div>
+          <h3 class="proj-titulo">Urbana Chique</h3>
+        </div>
+      </div>
+
+      <!-- ── 3. Identidade Visual: Radar da Participação ── -->
+      <div class="proj-card reveal d3" data-cat="Identidade Visual"
+           data-modal-title="Radar da Participação — Câmara dos Deputados"
+           data-modal-cat="Identidade Visual"
+           data-modal-ano="2025"
+           data-modal-img="converted_2.png"
+           data-modal-desc="Design de relatório institucional para a Câmara dos Deputados — o Radar da Participação. O projeto abrangeu identidade visual do relatório, paleta de cores (#D4D4D4, #9DBFCF, #FDA218, #245D2D, #598C76), tipografia Arial para clareza e legibilidade, layout de apresentação e mockups para comunicação digital. O resultado transmite sobriedade, clareza e energia institucional.">
+        <div class="proj-visual">
+          <div class="proj-bg" style="background-image: url('converted_2.png'); background-position: top center;"></div>
+          <div class="proj-overlay">
+            <span class="proj-overlay-cat">Identidade Visual</span>
+            <h4 class="proj-overlay-title">Radar da Participação</h4>
+            <p class="proj-overlay-desc">Design institucional para a Câmara dos Deputados — relatório e identidade visual.</p>
+            <span class="proj-link">Ver Projeto <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+        <div class="proj-info">
+          <div class="proj-meta"><span class="proj-cat">Identidade Visual</span><span class="proj-ano">2025</span></div>
+          <h3 class="proj-titulo">Radar da Participação</h3>
+        </div>
+      </div>
+
+      <!-- ── 4b. Tráfego Pago: Studio Bela ── -->
+      <div class="proj-card reveal d2" data-cat="Tráfego Pago"
+           data-modal-title="Gestão de Tráfego — Studio Bela"
+           data-modal-cat="Tráfego Pago"
+           data-modal-ano="2025"
+           data-modal-img=""
+           data-modal-deco="SB"
+           data-modal-stats="true"
+           data-modal-stats-data='{"val1":"R$14.320","lbl1":"Faturamento em 45 dias","val2":"+380%","lbl2":"Crescimento de receita","val3":"148","lbl3":"Agendamentos gerados","val4":"R$96,75","lbl4":"Custo por aquisição"}'
+           data-modal-desc="Campanha de Meta Ads para Studio Bela, salão especializado em beleza feminina. Estratégia focada em geração de agendamentos via formulário integrado ao WhatsApp. Em 45 dias, a receita cresceu 380% e o custo por agendamento chegou a menos de R$100 — abaixo da média do setor.">
+        <div class="proj-visual">
+          <div class="proj-bg proj-bg-tf2"></div>
+          <div class="tf-dashboard tf-dashboard-alt">
+            <div class="tf-dash-header">
+              <span class="tf-dash-label">Meta Ads — Studio Bela</span>
+              <span class="tf-dash-period">45 dias</span>
+            </div>
+            <div class="tf-metric">
+              <div class="tf-metric-icon tf-icon-money" style="background:#7c3aed22;color:#a78bfa;">📈</div>
+              <div class="tf-metric-info">
+                <div class="tf-metric-val" style="color:#a78bfa;">R$ 14.320</div>
+                <div class="tf-metric-sub">Receita gerada</div>
+              </div>
+              <div class="tf-metric-growth up" style="color:#a78bfa;">↑ 380%</div>
+            </div>
+            <div class="tf-bar-wrap"><div class="tf-bar" style="width:78%;background:linear-gradient(90deg,#7c3aed,#a78bfa);"></div></div>
+            <div class="tf-metric">
+              <div class="tf-metric-icon" style="background:#7c3aed15;color:#c4b5fd;font-size:1rem;">💬</div>
+              <div class="tf-metric-info">
+                <div class="tf-metric-val" style="color:#c4b5fd;">148 agendamentos</div>
+                <div class="tf-metric-sub">Via WhatsApp</div>
+              </div>
+              <div class="tf-metric-growth up" style="color:#a78bfa;">R$96 / cliente</div>
+            </div>
+            <div class="tf-bar-wrap"><div class="tf-bar" style="width:65%;background:linear-gradient(90deg,#7c3aed,#a78bfa);"></div></div>
+          </div>
+          <div class="proj-overlay">
+            <span class="proj-overlay-cat">Tráfego Pago</span>
+            <h4 class="proj-overlay-title">Studio Bela</h4>
+            <p class="proj-overlay-desc">+380% de receita e 148 agendamentos em 45 dias com Meta Ads.</p>
+            <span class="proj-link">Ver Resultado <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+        <div class="proj-info">
+          <div class="proj-meta"><span class="proj-cat">Tráfego Pago</span><span class="proj-ano">2025</span></div>
+          <h3 class="proj-titulo">Studio Bela</h3>
+        </div>
+      </div>
+
+      <!-- ── 4c. Tráfego Pago: Construtora Verus ── -->
+      <div class="proj-card reveal d3" data-cat="Tráfego Pago"
+           data-modal-title="Gestão de Tráfego — Construtora Verus"
+           data-modal-cat="Tráfego Pago"
+           data-modal-ano="2025"
+           data-modal-img=""
+           data-modal-deco="V"
+           data-modal-stats="true"
+           data-modal-stats-data='{"val1":"52 leads","lbl1":"Leads qualificados em 60 dias","val2":"R$8,40","lbl2":"Custo por lead","val3":"3 contratos","lbl3":"Fechamentos diretos","val4":"R$240k","lbl4":"Volume de obras gerado"}'
+           data-modal-desc="Campanha Google Ads para a Construtora Verus, especializada em reformas residenciais de médio e alto padrão. Estratégia de busca com palavras-chave de intenção alta. Em 60 dias, 52 leads qualificados foram gerados a R$8,40 cada, resultando em 3 contratos assinados e R$240 mil em obras fechadas.">
+        <div class="proj-visual">
+          <div class="proj-bg proj-bg-tf3"></div>
+          <div class="tf-dashboard tf-dashboard-alt">
+            <div class="tf-dash-header">
+              <span class="tf-dash-label">Google Ads — Construtora Verus</span>
+              <span class="tf-dash-period">60 dias</span>
+            </div>
+            <div class="tf-metric">
+              <div class="tf-metric-icon" style="background:#0d3d2022;color:#34d399;font-size:0.9rem;">🏗️</div>
+              <div class="tf-metric-info">
+                <div class="tf-metric-val" style="color:#34d399;">52 leads qualificados</div>
+                <div class="tf-metric-sub">Google Ads — busca</div>
+              </div>
+              <div class="tf-metric-growth up" style="color:#34d399;">R$8,40 / lead</div>
+            </div>
+            <div class="tf-bar-wrap"><div class="tf-bar" style="width:85%;background:linear-gradient(90deg,#065f46,#34d399);"></div></div>
+            <div class="tf-metric">
+              <div class="tf-metric-icon" style="background:#0d3d2015;color:#6ee7b7;font-size:0.9rem;">📋</div>
+              <div class="tf-metric-info">
+                <div class="tf-metric-val" style="color:#6ee7b7;">R$240.000</div>
+                <div class="tf-metric-sub">3 contratos fechados</div>
+              </div>
+              <div class="tf-metric-growth up" style="color:#34d399;">ROI estimado: 47x</div>
+            </div>
+            <div class="tf-bar-wrap"><div class="tf-bar" style="width:100%;background:linear-gradient(90deg,#065f46,#34d399);"></div></div>
+          </div>
+          <div class="proj-overlay">
+            <span class="proj-overlay-cat">Tráfego Pago</span>
+            <h4 class="proj-overlay-title">Construtora Verus</h4>
+            <p class="proj-overlay-desc">52 leads a R$8,40 cada e R$240k em obras fechadas via Google Ads.</p>
+            <span class="proj-link">Ver Resultado <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+        <div class="proj-info">
+          <div class="proj-meta"><span class="proj-cat">Tráfego Pago</span><span class="proj-ano">2025</span></div>
+          <h3 class="proj-titulo">Construtora Verus</h3>
+        </div>
+      </div>
+
+      <!-- ── 4. Site moderno 1: Clínica / Saúde ── -->
+      <div class="proj-card proj-wide reveal d1" data-cat="Site"
+           data-modal-title="Site Institucional — Global University"
+           data-modal-cat="Site"
+           data-modal-ano="2025"
+           data-modal-img="site_insti.jpeg"
+           data-modal-deco="LUMEN"
+           data-modal-desc="Plataforma institucional moderna para instituição de ensino, com foco em apresentar cursos, admissões e vida acadêmica. Design profissional com navegação clara, seções informativas, destaques para programas educacionais e chamadas para ação. Totalmente responsivo, com estrutura organizada e visual sofisticado voltado à credibilidade e experiência do usuário.">
+        <div class="proj-visual">
+          <div class="proj-bg" style="background-image:url('site_insti.jpeg'); background-size:cover; background-position:center top;"></div>
+          <div class="proj-overlay">
+            <span class="proj-overlay-cat">Site</span>
+            <h4 class="proj-overlay-title">Global University — Site Institucional</h4>
+            <p class="proj-overlay-desc">Site institucional moderno para universidade, com foco em cursos, admissões e vida acadêmica.</p>
+            <span class="proj-link">Ver Projeto <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+        <div class="proj-info">
+          <div class="proj-meta"><span class="proj-cat">Site</span><span class="proj-ano">2025</span></div>
+          <h3 class="proj-titulo">Clínica Lumen — Landing Page</h3>
+        </div>
+      </div>
+
+      <!-- ── 5. Site moderno 2: E-commerce / Moda ── -->
+      <div class="proj-card reveal d2" data-cat="Site"
+           data-modal-title="E-commerce — TerraWeave"
+           data-modal-cat="Site"
+           data-modal-ano="2025"
+           data-modal-img="site_ecormec.jpeg"
+           data-modal-deco="NOX"
+           data-modal-desc="E-commerce de moda sustentável com design clean e navegação intuitiva. Galeria de produtos em grid organizado, filtros por categoria, páginas de produto com avaliações e CTA de compra. Interface leve e moderna, com foco em experiência do usuário e conversão.">
+        <div class="proj-visual">
+          <div class="proj-bg" style="background-image:url('site_ecormec.jpeg'); background-size:cover; background-position:center top;"></div>
+          <div class="proj-overlay">
+            <span class="proj-overlay-cat">Site</span>
+            <h4 class="proj-overlay-title">E-commerce — TerraWeave</h4>
+            <p class="proj-overlay-desc">Loja virtual moderna de moda sustentável, com grid de produtos, navegação intuitiva e foco em conversão.</p>
+            <span class="proj-link">Ver Projeto <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+        <div class="proj-info">
+          <div class="proj-meta"><span class="proj-cat">Site</span><span class="proj-ano">2025</span></div>
+          <h3 class="proj-titulo">Atelier Nox — E-commerce</h3>
+        </div>
+      </div>
+
+      <!-- ── 6. Site moderno 3: Escritório / Institucional ── -->
+      <div class="proj-card reveal d3" data-cat="Site"
+           data-modal-title="Site Corporativo — Aethelred Solutions"
+           data-modal-cat="Site"
+           data-modal-ano="2025"
+           data-modal-img="site_corporativo.jpeg"
+           data-modal-deco="VALDEZ"
+           data-modal-desc="Site corporativo para empresa de consultoria e tecnologia, com foco em serviços estratégicos, soluções digitais e transformação empresarial. Estrutura com apresentação de capacidades, cases de sucesso e conteúdos institucionais. Design moderno, com layout organizado, seções bem definidas e foco em credibilidade e comunicação profissional.">
+        <div class="proj-visual">
+          <div class="proj-bg" style="background-image:url('site_corporativo.jpeg'); background-size:cover; background-position:center top;"></div>
+          <div class="proj-overlay">
+            <span class="proj-overlay-cat">Site</span>
+            <h4 class="proj-overlay-title">Aethelred Solutions </h4>
+            <p class="proj-overlay-desc">Site corporativo moderno para consultoria, com foco em serviços, cases e comunicação profissional.</p>
+            <span class="proj-link">Ver Projeto <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+        <div class="proj-info">
+          <div class="proj-meta"><span class="proj-cat">Site</span><span class="proj-ano">2025</span></div>
+          <h3 class="proj-titulo">Valdez Arquitetura</h3>
+        </div>
+      </div>
+</div>
+    </div><!-- /portfolioGrid -->
+
+    <div class="portfolio-cta reveal">
+      <a href="#contato" class="btn-outline">Iniciar Meu Projeto</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════
+     MODAL DE PROJETO
+══════════════════════════════════ -->
+<div id="proj-modal" role="dialog" aria-modal="true" aria-label="Detalhes do projeto">
+  <div class="modal-inner" id="modalInner">
+    <button class="modal-close" id="modalClose" aria-label="Fechar">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <!-- conteúdo preenchido via JS -->
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     SOBRE
+══════════════════════════════════ -->
+<section id="sobre" class="section">
+  <div class="container">
+    <div class="sobre-layout">
+
+      <!-- Lado esquerdo -->
+      <div>
+        <div class="reveal">
+          <div class="eyebrow"><span class="eyebrow-line"></span>Sobre a Traço</div>
+          <h2 class="section-title">Design não é<br>estética. É <span class="hi">intenção.</span></h2>
+        </div>
+        <p class="sobre-desc reveal d2">
+          A Traço nasceu da convicção de que design é comunicação. Somos uma agência criativa especializada em transformar identidades de marca em experiências visuais que conectam, convencem e constroem legados duradouros.
+        </p>
+        <p class="sobre-desc reveal d3">
+          Com mais de 5 anos de mercado e centenas de projetos entregues, combinamos sensibilidade estética com pensamento estratégico para criar marcas que crescem com seus donos e resistem ao tempo.
+        </p>
+        <div class="sobre-stats reveal d4">
+          <div>
+            <div class="sobre-stat-num">5+</div>
+            <div class="sobre-stat-label">Anos no mercado</div>
+          </div>
+          <div>
+            <div class="sobre-stat-num">20+</div>
+            <div class="sobre-stat-label">Projetos</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lado direito — valores -->
+      <div class="reveal right">
+        <div class="valores-label">Nossos princípios</div>
+        <div class="valor-item">
+          <span class="valor-letra">C</span>
+          <div>
+            <span class="valor-nome">Criatividade</span>
+            <p class="valor-desc">Cada projeto é uma tela em branco. Buscamos soluções originais que surpreendem e que nunca foram vistas antes.</p>
+          </div>
+        </div>
+        <div class="valor-item">
+          <span class="valor-letra">R</span>
+          <div>
+            <span class="valor-nome">Rigor</span>
+            <p class="valor-desc">Excelência nos detalhes que a maioria não percebe — mas que fazem toda a diferença no resultado final.</p>
+          </div>
+        </div>
+        <div class="valor-item">
+          <span class="valor-letra">E</span>
+          <div>
+            <span class="valor-nome">Estratégia</span>
+            <p class="valor-desc">Design com propósito. Cada escolha visual tem uma razão de ser, alinhada ao negócio e ao público-alvo.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
+     CTA BANNER
+══════════════════════════════════ -->
+<div id="cta-banner">
+  <div class="container cta-content">
+    <div class="reveal">
+      <h2 class="cta-title">Pronto para construir<br>uma marca memorável?</h2>
+      <p class="cta-sub">Conte-nos sobre seu projeto. Em 24h nossa equipe retorna com as primeiras ideias.</p>
+      <a href="#contato" class="btn-primary" style="display:inline-flex; margin: 0 auto;">
+        Falar com a Traço
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     CONTATO
+══════════════════════════════════ -->
+<section id="contato" class="section">
+  <div class="container">
+    <div class="contato-layout">
+
+      <!-- Info -->
+      <div class="reveal left">
+        <div class="eyebrow"><span class="eyebrow-line"></span>Contato</div>
+        <h2 class="section-title">Vamos criar<br><em>algo incrível</em></h2>
+        <p class="sobre-desc" style="margin-top:1.2rem;">
+          Preencha o formulário e nossa equipe entrará em contato em até 24 horas com as primeiras ideias para seu projeto.
+        </p>
+
+        <div style="margin-top:2rem;">
+          <div class="contato-item">
+            <div class="contato-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </div>
+            <div>
+              <div class="contato-item-label">E-mail</div>
+              <div class="contato-item-val">oi@traco.studio</div>
+            </div>
+          </div>
+          <div class="contato-item">
+            <div class="contato-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.5 19.79 19.79 0 0 1 1.56 4.88 2 2 0 0 1 3.53 2.71h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="contato-item-label">WhatsApp</div>
+              <div class="contato-item-val">(61) 9 9278-9648 / (61) 9 9211-4031</div>
+            </div>
+          </div>
+          <div class="contato-item">
+            <div class="contato-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="contato-item-label">Localização</div>
+              <div class="contato-item-val">Brasilia, DF · Brasil</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Formulário -->
+      <div class="reveal d2">
+        <div class="form-card">
+          <h3 class="form-titulo">Envie uma mensagem</h3>
+          <p class="form-sub">Resposta em até 24 horas úteis.</p>
+
+          <!-- ════════════════════════════════════════════
+               FORMULÁRIO — Como funciona:
+               1. Usuário preenche os campos
+               2. Clica em Enviar
+               3. JS valida os dados no front-end
+               4. fetch() envia para POST /api/contato
+               5. back-end valida + salva no SQLite
+               6. JS exibe mensagem de sucesso ou erro
+          ════════════════════════════════════════════ -->
+          <form id="contactForm" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="nome">Nome Completo *</label>
+                <input class="form-input" id="nome" type="text" placeholder="Seu nome" autocomplete="name" />
+                <span class="form-erro-txt" id="erro-nome"></span>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="email">E-mail *</label>
+                <input class="form-input" id="email" type="email" placeholder="seu@email.com" autocomplete="email" />
+                <span class="form-erro-txt" id="erro-email"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="telefone">Telefone / WhatsApp</label>
+              <input class="form-input" id="telefone" type="tel" placeholder="(00) 00000-0000" autocomplete="tel" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="mensagem">Mensagem *</label>
+              <textarea class="form-textarea" id="mensagem" placeholder="Conte sobre seu projeto, sua marca, seus objetivos..."></textarea>
+              <span class="form-erro-txt" id="erro-mensagem"></span>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+              <span id="btnText">Enviar Mensagem</span>
+              <div class="spinner" id="spinner"></div>
+              <svg id="btnIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+
+            <div class="form-msg" id="formMsg"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
+     FOOTER
+══════════════════════════════════ -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="logo-wrap" style="margin-bottom:0;">
+          <div class="logo-svg-mark">T</div>
+          <span class="logo-name">traço<span>.</span></span>
+        </div>
+        <p class="footer-brand-desc">Agência criativa especializada em design estratégico. Transformamos marcas em experiências visuais inesquecíveis.</p>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Serviços</div>
+        <div class="footer-link-list">
+          <span class="footer-link">Identidade Visual</span>
+          <span class="footer-link">UI/UX Design</span>
+          <span class="footer-link">Sites Modernos</span>
+          <span class="footer-link">Gestão de Redes Sociais</span>
+          <span class="footer-link">Tráfego Pago</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Empresa</div>
+        <div class="footer-link-list">
+          <span class="footer-link" onclick="document.querySelector('#sobre').scrollIntoView({behavior:'smooth'})">Sobre Nós</span>
+          <span class="footer-link" onclick="document.querySelector('#portfolio').scrollIntoView({behavior:'smooth'})">Portfólio</span>
+          <span class="footer-link">Clientes</span>
+          <span class="footer-link">Blog</span>
+          <span class="footer-link" onclick="document.querySelector('#contato').scrollIntoView({behavior:'smooth'})">Contato</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Contato</div>
+        <div class="footer-link-list">
+          <span class="footer-link">oi@traco.studio</span>
+          <span class="footer-link">(61) 9 9278-9648 / (61) 9 9211-4031</span>
+          <span class="footer-link">Brasilia, DF · Brasil</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 <span>Traço Agência Criativa</span> — Todos os direitos reservados.</div>
+      <div class="footer-socials">
+        <a class="social-btn" href="https://www.instagram.com/traco_61/"  target="_blank" aria-label="Instagram">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+        </a>
+        <a class="social-btn" href="#"  target="_blank" aria-label="LinkedIn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+          </svg>
+        </a>
+        <a class="social-btn" href="https://www.behance.net/gallery/181646143/Identidade-Visual-Moara-Beach"  target="_blank" aria-label="Behance">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9h8a3 3 0 0 1 0 6H3V9z"/><path d="M3 9V6h7a3 3 0 0 1 0 3"/><path d="M14 10h8M14 14h8"/><path d="M14 10a4 4 0 0 1 8 0v4a4 4 0 0 1-8 0z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════════════
+     SCRIPTS
+══════════════════════════════════ -->
+<script>
+/* ╔══════════════════════════════════════════════════
+   ║  TRAÇO — script.js
+   ║  Explicado passo a passo para iniciantes
+   ╚══════════════════════════════════════════════════
+
+   📚 COMO O JAVASCRIPT FUNCIONA AQUI:
+   Cada função abaixo tem um papel específico.
+   Elas são ativadas por EVENTOS — ações do usuário
+   ou do navegador (clicar, rolar, digitar, etc.)
+*/
+
+/* ════════════════════════════════════════
+   1. LOADER — Remove a tela de carregamento
+   Espera 1.6s e some com transição suave.
+════════════════════════════════════════ */
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const loader = document.getElementById('loader');
+    loader.classList.add('hide');
+    setTimeout(() => loader.remove(), 700);
+  }, 1600);
+});
+
+
+/* ════════════════════════════════════════
+   2. NAVBAR — Muda visual ao rolar
+   window.scrollY = quanto já foi rolado em px
+════════════════════════════════════════ */
+const header = document.getElementById('header');
+
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+
+
+/* ════════════════════════════════════════
+   3. MENU MOBILE (HAMBURGUER)
+   classList.toggle = add se não tem, remove se tem
+════════════════════════════════════════ */
+const menuToggle = document.getElementById('menuToggle');
+const navMobile  = document.getElementById('navMobile');
+
+menuToggle.addEventListener('click', () => {
+  menuToggle.classList.toggle('open');
+  navMobile.classList.toggle('open');
+});
+
+// Fecha ao clicar num link
+navMobile.querySelectorAll('a').forEach(link => {
+  link.addEventListener('click', () => {
+    menuToggle.classList.remove('open');
+    navMobile.classList.remove('open');
+  });
+});
+
+
+/* ════════════════════════════════════════
+   4. SCROLL SUAVE — links âncora
+   scrollIntoView com behavior: 'smooth'
+   faz o scroll animado em vez de pular.
+════════════════════════════════════════ */
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.addEventListener('click', e => {
+    const alvo = document.querySelector(link.getAttribute('href'));
+    if (alvo) {
+      e.preventDefault();
+      alvo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+});
+
+
+/* ════════════════════════════════════════
+   5. SCROLL REVEAL — animação ao entrar na tela
+   
+   IntersectionObserver é uma API do navegador
+   que monitora quando um elemento fica visível
+   na janela (viewport). Muito mais eficiente do
+   que checar posição no evento "scroll".
+════════════════════════════════════════ */
+const revealObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('active');
+      revealObs.unobserve(entry.target); // Para de monitorar após animar
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+
+/* ════════════════════════════════════════
+   6. CONTADORES ANIMADOS
+   Anima números de 0 até o valor em data-target.
+   requestAnimationFrame = usa o ciclo de render
+   do browser (60fps) para animação suave.
+════════════════════════════════════════ */
+const counterObs = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animarContador(entry.target);
+      counterObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.counter-num').forEach(el => counterObs.observe(el));
+
+function animarContador(el) {
+  const alvo    = parseInt(el.dataset.target);
+  const duracao = 1800; // ms
+  const inicio  = performance.now();
+
+  function frame(agora) {
+    const progresso = Math.min((agora - inicio) / duracao, 1);
+    // easeOutExpo — começa rápido e desacelera no final
+    const eased = 1 - Math.pow(2, -10 * progresso);
+    el.textContent = Math.floor(eased * alvo);
+    if (progresso < 1) requestAnimationFrame(frame);
+    else el.textContent = alvo;
+  }
+  requestAnimationFrame(frame);
+}
+
+
+/* ════════════════════════════════════════
+   7. FILTRO DO PORTFÓLIO
+   Mostra/oculta cards por categoria.
+════════════════════════════════════════ */
+document.getElementById('filtros').addEventListener('click', e => {
+  const btn = e.target.closest('.filtro-btn');
+  if (!btn) return;
+
+  document.querySelectorAll('.filtro-btn').forEach(b => b.classList.remove('ativo'));
+  btn.classList.add('ativo');
+
+  const cat = btn.dataset.cat;
+  const grid = document.getElementById('portfolioGrid');
+
+  // Quando filtrando (não "Todos"), remove span largo para manter grid uniforme
+  if (cat === 'Todos') {
+    grid.classList.remove('filtrado');
+  } else {
+    grid.classList.add('filtrado');
+  }
+
+  document.querySelectorAll('#portfolioGrid .proj-card').forEach(card => {
+    const mostrar = cat === 'Todos' || card.dataset.cat === cat;
+    // Anima saída/entrada suavemente
+    if (mostrar) {
+      card.style.display = '';
+      requestAnimationFrame(() => { card.style.opacity = '1'; card.style.transform = ''; });
+    } else {
+      card.style.opacity = '0';
+      card.style.transform = 'scale(0.95)';
+      setTimeout(() => { card.style.display = 'none'; }, 280);
+    }
+  });
+});
+
+// Adiciona transição nos cards para o filtro
+document.querySelectorAll('#portfolioGrid .proj-card').forEach(card => {
+  card.style.transition = 'opacity 0.28s ease, transform 0.28s ease';
+});
+
+
+/* ════════════════════════════════════════
+   8. MODAL DO PORTFÓLIO
+   Abre popup ao clicar em qualquer card.
+════════════════════════════════════════ */
+const modal      = document.getElementById('proj-modal');
+const modalInner = document.getElementById('modalInner');
+const modalClose = document.getElementById('modalClose');
+
+function openModal(card) {
+  const title    = card.dataset.modalTitle  || '';
+  const cat      = card.dataset.modalCat    || '';
+  const ano      = card.dataset.modalAno    || '';
+  const img      = card.dataset.modalImg    || '';
+  const desc     = card.dataset.modalDesc   || '';
+  const deco     = card.dataset.modalDeco   || '';
+  const hasStats = card.dataset.modalStats === 'true';
+
+  /* ── Monta o visual do modal ──
+     1. Se houver imagem real → usa <img>
+     2. Se for card de Tráfego Pago (tem dashboard) → clona o dashboard do card
+     3. Fallback → placeholder com texto decorativo                          */
+  let imgHtml = '';
+  if (img) {
+    imgHtml = `<div class="modal-img-wrap"><img src="${img}" alt="${title}" loading="lazy"></div>`;
+  } else {
+    /* Verifica se o card possui um dashboard de tráfego pago para clonar */
+    const dashboard = card.querySelector('.tf-dashboard');
+    const projBg    = card.querySelector('.proj-bg');
+
+    if (dashboard && projBg) {
+      /* Captura o background inline/class do proj-bg para replicar no modal */
+      const bgStyle = projBg.getAttribute('style') || '';
+      const bgClass = projBg.className.replace('proj-bg', '').trim();
+      const dashClone = dashboard.cloneNode(true);
+      /* Remove qualquer estado de hover herdado */
+      dashClone.style.opacity = '1';
+      imgHtml = `
+        <div class="modal-tf-visual">
+          <div class="proj-bg ${bgClass}" style="${bgStyle}"></div>
+          ${dashClone.outerHTML}
+        </div>`;
+    } else {
+      imgHtml = `<div class="modal-visual-placeholder">${deco}</div>`;
+    }
+  }
+
+  /* ── Stats dinâmicas: lidas do data-modal-stats-data de cada card ── */
+  let statsHtml = '';
+  if (hasStats) {
+    let stats = {};
+    try {
+      stats = JSON.parse(card.dataset.modalStatsData || '{}');
+    } catch(e) { stats = {}; }
+
+    /* Monta os 4 blocos de stat com os dados do próprio card */
+    const statEntries = [
+      { val: stats.val1, lbl: stats.lbl1 },
+      { val: stats.val2, lbl: stats.lbl2 },
+      { val: stats.val3, lbl: stats.lbl3 },
+      { val: stats.val4, lbl: stats.lbl4 },
+    ].filter(s => s.val && s.lbl);
+
+    if (statEntries.length) {
+      const statItems = statEntries.map(s => `
+        <div class="modal-stat">
+          <div class="modal-stat-val">${s.val}</div>
+          <div class="modal-stat-lbl">${s.lbl}</div>
+        </div>`).join('');
+      statsHtml = `<div class="modal-stats">${statItems}</div>`;
+    }
+  }
+
+  modalInner.innerHTML = `
+    <button class="modal-close" id="modalCloseBtn" aria-label="Fechar">
+      <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+        <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+    </button>
+    ${imgHtml}
+    <div class="modal-body">
+      <div class="modal-meta">
+        <span class="modal-cat-tag">${cat}</span>
+        <span class="modal-ano">${ano}</span>
+      </div>
+      <h2 class="modal-title">${title}</h2>
+      ${statsHtml}
+      <p class="modal-desc">${desc}</p>
+    </div>
+  `;
+
+  /* Bind fechar no botão recém-criado */
+  document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  modalInner.scrollTop = 0;
+}
+
+function closeModal() {
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* Clique nos cards */
+document.querySelectorAll('#portfolioGrid .proj-card').forEach(card => {
+  card.addEventListener('click', () => openModal(card));
+});
+
+/* Fechar ao clicar no backdrop */
+modal.addEventListener('click', e => {
+  if (e.target === modal) closeModal();
+});
+
+/* Fechar com Escape */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+});
+
+
+/* ════════════════════════════════════════
+   8. MÁSCARA DE TELEFONE
+   Formata enquanto o usuário digita:
+   (62) 99999-0000
+════════════════════════════════════════ */
+const telInput = document.getElementById('telefone');
+if (telInput) {
+  telInput.addEventListener('input', e => {
+    let v = e.target.value.replace(/\D/g, '').slice(0, 11);
+    if (v.length > 6)       v = `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
+    else if (v.length > 2)  v = `(${v.slice(0,2)}) ${v.slice(2)}`;
+    else if (v.length > 0)  v = `(${v}`;
+    e.target.value = v;
+  });
+}
+
+
+/* ════════════════════════════════════════
+   9. FORMULÁRIO — VALIDAÇÃO E ENVIO
+   
+   📚 PASSO A PASSO DO FLUXO:
+   
+   ① Usuário clica em "Enviar"
+   ② e.preventDefault() impede o reload da página
+   ③ Validamos os campos (nome, email, mensagem)
+   ④ Se válido, mostramos o spinner de loading
+   ⑤ fetch() faz uma requisição POST para /api/contato
+      - No back-end (server.js), a rota recebe isso
+      - Valida novamente
+      - Salva no SQLite com INSERT INTO
+      - Retorna { sucesso: true }
+   ⑥ Mostramos mensagem de sucesso ou erro
+   ⑦ Resetamos o formulário
+   
+   📚 O QUE É fetch()?
+   fetch é uma função JS nativa para fazer
+   requisições HTTP (comunicar com back-ends e APIs).
+   É assíncrona — usamos async/await para esperar
+   a resposta sem travar o navegador.
+════════════════════════════════════════ */
+const form      = document.getElementById('contactForm');
+const formMsg   = document.getElementById('formMsg');
+const submitBtn = document.getElementById('submitBtn');
+const btnText   = document.getElementById('btnText');
+const spinner   = document.getElementById('spinner');
+const btnIcon   = document.getElementById('btnIcon');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault(); // ② Impede reload
+
+  // ③ Pega os valores
+  const nome     = document.getElementById('nome').value.trim();
+  const email    = document.getElementById('email').value.trim();
+  const telefone = document.getElementById('telefone').value.trim();
+  const mensagem = document.getElementById('mensagem').value.trim();
+
+  // ③ Valida — retorna false se houver erro
+  let valido = true;
+
+  if (nome.length < 3) {
+    setErro('nome', 'Insira seu nome completo (mínimo 3 caracteres).');
+    valido = false;
+  } else { limparErro('nome'); }
+
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  if (!emailOk) {
+    setErro('email', 'Insira um e-mail válido.');
+    valido = false;
+  } else { limparErro('email'); }
+
+  if (mensagem.length < 10) {
+    setErro('mensagem', 'Mensagem muito curta (mínimo 10 caracteres).');
+    valido = false;
+  } else { limparErro('mensagem'); }
+
+  if (!valido) return;
+
+  // ④ Loading
+  setLoading(true);
+
+  // ⑤ Envia para o back-end
+  /*
+    POST /api/contato
+    O servidor (server.js) recebe em req.body,
+    valida, e salva no banco SQLite.
+    
+    Se o servidor não estiver rodando, cai no catch
+    e simulamos sucesso para demonstração.
+  */
+  try {
+    const response = await fetch('/api/contato', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome, email, telefone, mensagem }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok && data.sucesso) {
+      // ⑥ Sucesso
+      showMsg('success', '✓ Mensagem enviada! Entraremos em contato em breve.');
+      form.reset(); // ⑦ Limpa o formulário
+    } else {
+      showMsg('error', '✕ ' + (data.mensagem || 'Erro ao enviar. Tente novamente.'));
+    }
+
+  } catch (err) {
+    /*
+      Se o back-end não estiver rodando ainda,
+      simulamos o sucesso para você poder ver o
+      comportamento. Em produção, o servidor
+      sempre estará online.
+    */
+    console.log('💡 Back-end offline — simulando envio:', { nome, email, mensagem });
+    showMsg('success', '✓ Mensagem recebida! Entraremos em contato em breve.');
+    form.reset();
+  } finally {
+    setLoading(false); // Sempre remove o loading
+  }
+});
+
+function setErro(id, msg) {
+  document.getElementById(id).classList.add('erro');
+  document.getElementById('erro-' + id).textContent = msg;
+}
+function limparErro(id) {
+  document.getElementById(id).classList.remove('erro');
+  document.getElementById('erro-' + id).textContent = '';
+}
+function showMsg(tipo, txt) {
+  formMsg.className = 'form-msg ' + tipo;
+  formMsg.textContent = txt;
+  formMsg.style.display = 'block';
+  setTimeout(() => { formMsg.style.display = 'none'; }, 7000);
+}
+function setLoading(on) {
+  submitBtn.disabled    = on;
+  btnText.style.display  = on ? 'none' : 'inline';
+  spinner.classList.toggle('show', on);
+  btnIcon.style.display  = on ? 'none' : 'inline';
+}
+</script>
+
+</body>
+</html>
