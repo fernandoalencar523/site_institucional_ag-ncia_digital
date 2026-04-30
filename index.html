@@ -140,6 +140,12 @@
 
     /* Logo SVG inline */
     .logo-wrap { display: flex; align-items: center; gap: 0.6rem; cursor: pointer; }
+    .logo-img {
+      height: 44px; width: auto;
+      transition: transform 0.3s var(--ease-spring);
+      filter: brightness(0) invert(1);
+    }
+    .logo-wrap:hover .logo-img { transform: scale(1.05); }
     .logo-svg-mark {
       width: 38px; height: 38px;
       background: linear-gradient(135deg, var(--electric-dk), var(--electric-lt));
@@ -1533,6 +1539,283 @@
       letter-spacing: 0.2em;
     }
 
+
+    /* ════════════════════════════════════════
+       PLANOS
+    ════════════════════════════════════════ */
+    #planos { background: var(--navy-deep); }
+
+    .planos-tabs {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    .planos-tab {
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted);
+      border: 1px solid var(--border-soft);
+      padding: 0.6rem 1.4rem;
+      cursor: pointer; background: none;
+      font-family: var(--font-body);
+      transition: all 0.25s ease;
+    }
+    .planos-tab:hover { color: var(--off-white); border-color: rgba(238,244,250,0.25); }
+    .planos-tab.ativo { color: var(--navy-deep); background: var(--electric); border-color: var(--electric); }
+
+    .planos-panel { display: none; }
+    .planos-panel.ativo { display: block; }
+
+    /* Estruturação destaque */
+    .plano-estrutura {
+      border: 1px solid rgba(75,170,220,0.25);
+      background: rgba(75,170,220,0.04);
+      padding: 2.5rem;
+      margin-bottom: 3rem;
+      position: relative; overflow: hidden;
+    }
+    .plano-estrutura::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, var(--electric-dk), var(--electric-lt));
+    }
+    .plano-estrutura-inner {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 2rem; align-items: center;
+    }
+    @media(max-width:768px){ .plano-estrutura-inner { grid-template-columns: 1fr; } }
+    .plano-estrutura-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--electric);
+      border: 1px solid rgba(75,170,220,0.3);
+      padding: 0.3rem 0.8rem; margin-bottom: 0.9rem;
+    }
+    .plano-estrutura-titulo {
+      font-family: var(--font-display); font-size: 1.6rem;
+      font-weight: 700; color: var(--white); margin-bottom: 0.5rem;
+    }
+    .plano-estrutura-desc {
+      font-size: 0.9rem; color: var(--muted); line-height: 1.75; margin-bottom: 1rem;
+    }
+    .plano-estrutura-preco {
+      text-align: center;
+    }
+    .plano-preco-de { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .plano-preco-val {
+      font-family: var(--font-display); font-size: 2.2rem;
+      font-weight: 800; color: var(--electric); line-height: 1;
+      margin: 0.3rem 0;
+    }
+    .plano-preco-tipo { font-size: 0.75rem; color: var(--muted); }
+
+    .plano-features {
+      display: flex; flex-wrap: wrap; gap: 0.4rem 1rem;
+      margin-top: 0.8rem;
+    }
+    .plano-feature {
+      display: flex; align-items: center; gap: 0.4rem;
+      font-size: 0.82rem; color: rgba(238,244,250,0.75);
+    }
+    .plano-feature::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+      background: var(--electric); flex-shrink: 0;
+    }
+    .plano-aviso {
+      font-size: 0.75rem; color: rgba(180,210,235,0.4);
+      margin-top: 1rem; font-style: italic;
+    }
+
+    /* Grid de planos mensais */
+    .planos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    @media(max-width:1024px){ .planos-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:600px){ .planos-grid { grid-template-columns: 1fr; } }
+
+    .plano-card {
+      position: relative; padding: 2.2rem 2rem;
+      border: 1px solid var(--border-soft);
+      background: var(--navy);
+      overflow: hidden;
+      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex; flex-direction: column;
+    }
+    .plano-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, var(--electric-dk), var(--electric-lt));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s var(--ease-out);
+    }
+    .plano-card:hover { border-color: rgba(75,170,220,0.35); transform: translateY(-4px); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+    .plano-card:hover::before { transform: scaleX(1); }
+    .plano-card.destaque {
+      border-color: rgba(75,170,220,0.4);
+      background: rgba(75,170,220,0.06);
+    }
+    .plano-card.destaque::before { transform: scaleX(1); }
+
+    .destaque-tag {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      font-size: 0.6rem; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--navy-deep);
+      background: var(--electric);
+      padding: 0.2rem 0.6rem;
+    }
+
+    .plano-emoji { font-size: 1.4rem; margin-bottom: 0.8rem; }
+    .plano-nome {
+      font-family: var(--font-display); font-size: 1.25rem;
+      font-weight: 700; color: var(--white); margin-bottom: 0.4rem;
+    }
+    .plano-preco-blk { margin-bottom: 1.5rem; }
+    .plano-preco-blk .plano-preco-val { font-size: 1.6rem; }
+
+    .plano-divider {
+      height: 1px; background: var(--border-soft);
+      margin: 1.2rem 0;
+    }
+    .plano-section-lbl {
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--electric);
+      margin-bottom: 0.7rem;
+    }
+    .plano-items { display: flex; flex-direction: column; gap: 0.45rem; flex: 1; }
+    .plano-item {
+      display: flex; align-items: flex-start; gap: 0.5rem;
+      font-size: 0.82rem; color: rgba(238,244,250,0.72); line-height: 1.4;
+    }
+    .plano-item-ico {
+      width: 14px; height: 14px; flex-shrink: 0; margin-top: 1px;
+      color: var(--electric);
+    }
+
+    .plano-cta {
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+      margin-top: 1.8rem; padding: 0.85rem;
+      font-family: var(--font-body); font-size: 0.78rem;
+      font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--navy-deep);
+      background: linear-gradient(135deg, var(--electric-dk), var(--electric-lt));
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      text-decoration: none;
+    }
+    .plano-cta:hover { opacity: 0.9; transform: translateY(-2px); }
+    .plano-cta-outline {
+      background: transparent;
+      border: 1px solid rgba(75,170,220,0.35);
+      color: var(--electric);
+    }
+    .plano-cta-outline:hover { border-color: var(--electric); background: rgba(75,170,220,0.08); }
+
+    /* Sites grid */
+    .sites-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .sites-grid .plano-card.wide { grid-column: span 2; }
+    @media(max-width:768px){
+      .sites-grid { grid-template-columns: 1fr; }
+      .sites-grid .plano-card.wide { grid-column: span 1; }
+    }
+
+    /* ════════════════════════════════════════
+       PAGAMENTO
+    ════════════════════════════════════════ */
+    #pagamento { background: var(--navy); }
+
+    .pagamento-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    @media(max-width:768px){ .pagamento-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+    .pagamento-metodos {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1rem; margin-top: 2rem;
+    }
+    @media(max-width:480px){ .pagamento-metodos { grid-template-columns: 1fr; } }
+
+    .pagamento-card {
+      padding: 1.8rem 1.5rem;
+      border: 1px solid var(--border-soft);
+      background: rgba(255,255,255,0.02);
+      text-align: center;
+      transition: border-color 0.3s, background 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .pagamento-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, var(--electric-dk), var(--electric-lt));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s var(--ease-out);
+    }
+    .pagamento-card:hover { border-color: rgba(75,170,220,0.3); background: rgba(75,170,220,0.04); }
+    .pagamento-card:hover::before { transform: scaleX(1); }
+    .pagamento-icon {
+      width: 48px; height: 48px; margin: 0 auto 1rem;
+      background: rgba(75,170,220,0.1);
+      border: 1px solid rgba(75,170,220,0.2);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--electric);
+    }
+    .pagamento-nome {
+      font-family: var(--font-display); font-size: 1rem;
+      font-weight: 600; color: var(--white); margin-bottom: 0.4rem;
+    }
+    .pagamento-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+    .pagamento-info {
+      padding: 2rem;
+      border: 1px solid var(--border-soft);
+      background: rgba(75,170,220,0.03);
+      margin-top: 2rem;
+      position: relative;
+    }
+    .pagamento-info::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: linear-gradient(to bottom, var(--electric-dk), var(--electric-lt));
+    }
+    .pagamento-info-titulo {
+      font-family: var(--font-display); font-size: 1rem;
+      font-weight: 600; color: var(--white); margin-bottom: 0.8rem;
+    }
+    .pagamento-info-item {
+      display: flex; align-items: flex-start; gap: 0.6rem;
+      font-size: 0.84rem; color: var(--muted); line-height: 1.5;
+      margin-bottom: 0.6rem;
+    }
+    .pagamento-info-item::before {
+      content: '→'; color: var(--electric); flex-shrink: 0; font-size: 0.8rem;
+    }
+
+    .pagamento-pix-box {
+      padding: 1.5rem 2rem;
+      border: 1px dashed rgba(75,170,220,0.3);
+      background: rgba(75,170,220,0.04);
+      margin-top: 1.5rem;
+    }
+    .pagamento-pix-titulo {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--electric);
+      margin-bottom: 0.6rem;
+    }
+    .pagamento-pix-key {
+      font-family: var(--font-display); font-size: 1.1rem;
+      font-weight: 600; color: var(--white);
+      /* ⚠️ EDITE AQUI: substitua pela sua chave Pix real */
+    }
+    .pagamento-pix-nota {
+      font-size: 0.75rem; color: rgba(180,210,235,0.4);
+      margin-top: 0.4rem; font-style: italic;
+    }
+
   </style>
 </head>
 
@@ -1554,13 +1837,13 @@
 <header id="header">
   <div class="container header-inner">
     <a class="logo-wrap" href="#hero">
-      <div class="logo-svg-mark">T</div>
-      <span class="logo-name">traço<span>.</span></span>
+      <img class="logo-img" src="logooo.png" alt="Traço Agência Criativa" />
     </a>
 
     <nav class="nav-desktop">
       <a href="#servicos"  class="nav-link">Serviços</a>
       <a href="#portfolio" class="nav-link">Portfólio</a>
+      <a href="#planos"    class="nav-link">Planos</a>
       <a href="#sobre"     class="nav-link">Sobre</a>
       <a href="#contato"   class="btn-nav">Fale Conosco</a>
     </nav>
@@ -1573,6 +1856,7 @@
   <div class="nav-mobile" id="navMobile">
     <a href="#servicos"  class="nav-mobile-link">Serviços</a>
     <a href="#portfolio" class="nav-mobile-link">Portfólio</a>
+    <a href="#planos"    class="nav-mobile-link">Planos</a>
     <a href="#sobre"     class="nav-mobile-link">Sobre</a>
     <a href="#contato"   class="nav-mobile-link btn-nav btn-nav-mobile">Fale Conosco</a>
   </div>
@@ -2101,6 +2385,395 @@
 
 
 <!-- ══════════════════════════════════
+     PLANOS
+══════════════════════════════════ -->
+<section id="planos" class="section">
+  <div class="container">
+    <div class="reveal">
+      <div class="eyebrow"><span class="eyebrow-line"></span>Nossos Planos</div>
+      <h2 class="section-title">Investimento claro,<br><em>resultado garantido</em></h2>
+      <p style="font-size:0.95rem;color:var(--muted);max-width:560px;margin-top:1rem;font-weight:300;line-height:1.8;">
+        Escolha o plano ideal para o seu negócio. Todos os planos podem ser personalizados conforme suas necessidades.
+      </p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="planos-tabs reveal d2" style="margin-top:2.5rem;">
+      <button class="planos-tab ativo" data-tab="marketing">📣 Marketing</button>
+      <button class="planos-tab" data-tab="sites">🌐 Sites</button>
+    </div>
+
+    <!-- PAINEL MARKETING -->
+    <div class="planos-panel ativo" id="tab-marketing">
+
+      <!-- Estruturação -->
+      <div class="plano-estrutura reveal">
+        <div class="plano-estrutura-inner">
+          <div>
+            <div class="plano-estrutura-badge">🔰 Ponto de partida</div>
+            <div class="plano-estrutura-titulo">Estruturação do Zero</div>
+            <div class="plano-estrutura-desc">Para empresas que ainda não têm presença profissional. Criamos a base completa da sua marca digital.</div>
+            <div class="plano-features">
+              <span class="plano-feature">Criação de identidade visual</span>
+              <span class="plano-feature">Organização completa do Instagram</span>
+              <span class="plano-feature">6 a 12 posts iniciais</span>
+              <span class="plano-feature">Padronização visual do perfil</span>
+            </div>
+            <div class="plano-aviso">📌 Não inclui anúncios · Objetivo: deixar a marca pronta para crescer</div>
+          </div>
+          <div class="plano-estrutura-preco">
+            <div class="plano-preco-de">Investimento</div>
+            <div class="plano-preco-val">R$ 800</div>
+            <div class="plano-preco-tipo">a R$ 2.500 · pagamento único</div>
+            <a href="#contato" class="plano-cta" style="margin-top:1.2rem;display:flex;">Quero Estruturar</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Planos mensais -->
+      <h3 class="reveal" style="font-family:var(--font-display);font-size:1.15rem;font-weight:600;color:var(--white);margin-bottom:1.5rem;">🔁 Planos Mensais de Gestão</h3>
+
+      <div class="planos-grid">
+
+        <!-- Básico -->
+        <div class="plano-card reveal d1">
+          <div class="plano-emoji">🟢</div>
+          <div class="plano-nome">Plano Básico</div>
+          <div class="plano-preco-blk">
+            <div class="plano-preco-de">a partir de</div>
+            <div class="plano-preco-val">R$ 500<span style="font-size:0.9rem;font-weight:400">/mês</span></div>
+            <div class="plano-preco-tipo">até R$ 900/mês</div>
+          </div>
+          <div class="plano-divider"></div>
+          <div class="plano-section-lbl">Conteúdo</div>
+          <div class="plano-items">
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>8 posts mensais</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Organização do perfil</div>
+          </div>
+          <div class="plano-divider"></div>
+          <div class="plano-section-lbl">Tráfego Pago</div>
+          <div class="plano-items">
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Anúncios simples</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Público inicial</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Impulsionamento</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Acompanhamento básico</div>
+          </div>
+          <a href="#contato" class="plano-cta plano-cta-outline">Começar Agora</a>
+        </div>
+
+        <!-- Essencial -->
+        <div class="plano-card reveal d2">
+          <div class="plano-emoji">🔵</div>
+          <div class="plano-nome">Plano Essencial</div>
+          <div class="plano-preco-blk">
+            <div class="plano-preco-de">a partir de</div>
+            <div class="plano-preco-val">R$ 900<span style="font-size:0.9rem;font-weight:400">/mês</span></div>
+            <div class="plano-preco-tipo">até R$ 1.500/mês</div>
+          </div>
+          <div class="plano-divider"></div>
+          <div class="plano-section-lbl">Conteúdo</div>
+          <div class="plano-items">
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>12 posts mensais</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Planejamento de conteúdo</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Otimização do perfil</div>
+          </div>
+          <div class="plano-divider"></div>
+          <div class="plano-section-lbl">Tráfego Pago</div>
+          <div class="plano-items">
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Campanhas estruturadas</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Segmentação avançada</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Testes e ajustes</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Relatório mensal</div>
+          </div>
+          <a href="#contato" class="plano-cta plano-cta-outline">Começar Agora</a>
+        </div>
+
+        <!-- Crescimento -->
+        <div class="plano-card destaque reveal d3">
+          <div class="destaque-tag">⭐ Popular</div>
+          <div class="plano-emoji">🟠</div>
+          <div class="plano-nome">Plano Crescimento</div>
+          <div class="plano-preco-blk">
+            <div class="plano-preco-de">a partir de</div>
+            <div class="plano-preco-val">R$ 1.500<span style="font-size:0.9rem;font-weight:400">/mês</span></div>
+            <div class="plano-preco-tipo">até R$ 2.500/mês</div>
+          </div>
+          <div class="plano-divider"></div>
+          <div class="plano-section-lbl">Conteúdo</div>
+          <div class="plano-items">
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>16 a 20 posts mensais</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Estratégia de conteúdo</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Gestão completa das redes</div>
+          </div>
+          <div class="plano-divider"></div>
+          <div class="plano-section-lbl">Tráfego Pago</div>
+          <div class="plano-items">
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Múltiplas campanhas</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Testes de criativos</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Otimizações frequentes</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Análise de métricas</div>
+          </div>
+          <a href="#contato" class="plano-cta">Começar Agora</a>
+        </div>
+
+        <!-- Autoridade -->
+        <div class="plano-card reveal d1">
+          <div class="plano-emoji">🔴</div>
+          <div class="plano-nome">Plano Autoridade</div>
+          <div class="plano-preco-blk">
+            <div class="plano-preco-de">a partir de</div>
+            <div class="plano-preco-val">R$ 2.500<span style="font-size:0.9rem;font-weight:400">/mês</span></div>
+            <div class="plano-preco-tipo">até R$ 4.000/mês</div>
+          </div>
+          <div class="plano-divider"></div>
+          <div class="plano-section-lbl">Conteúdo</div>
+          <div class="plano-items">
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>20 posts mensais</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Planejamento completo</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Gestão ativa das redes</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Roteiros e edição de vídeos</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Direcionamento de gravação</div>
+          </div>
+          <div class="plano-divider"></div>
+          <div class="plano-section-lbl">Tráfego Pago</div>
+          <div class="plano-items">
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Estratégia de campanhas</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Público avançado + Remarketing</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Testes e otimizações</div>
+          </div>
+          <a href="#contato" class="plano-cta plano-cta-outline">Começar Agora</a>
+        </div>
+
+        <!-- Premium -->
+        <div class="plano-card reveal d2" style="grid-column: span 2;">
+          <div class="plano-emoji">⚫</div>
+          <div style="display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;">
+            <div>
+              <div class="plano-nome">Plano Premium — Full Gestão</div>
+              <div class="plano-preco-blk" style="margin-top:0.5rem;">
+                <div class="plano-preco-de">a partir de</div>
+                <div class="plano-preco-val">R$ 4.000<span style="font-size:0.9rem;font-weight:400">/mês</span></div>
+                <div class="plano-preco-tipo">até R$ 8.000+/mês</div>
+              </div>
+              <div class="plano-features" style="margin-top:1rem;">
+                <span class="plano-feature">Gestão completa de marketing</span>
+                <span class="plano-feature">Produção de conteúdo</span>
+                <span class="plano-feature">Planejamento de vendas</span>
+                <span class="plano-feature">Suporte e reuniões</span>
+                <span class="plano-feature">Estratégia completa de tráfego</span>
+                <span class="plano-feature">Escala de campanhas</span>
+                <span class="plano-feature">Testes e otimização contínua</span>
+              </div>
+            </div>
+            <div>
+              <a href="#contato" class="plano-cta" style="white-space:nowrap;">Quero o Premium</a>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /planos-grid -->
+    </div><!-- /tab-marketing -->
+
+    <!-- PAINEL SITES -->
+    <div class="planos-panel" id="tab-sites">
+      <div class="sites-grid">
+
+        <!-- Site Básico -->
+        <div class="plano-card reveal d1">
+          <div class="plano-emoji">🟢</div>
+          <div class="plano-nome">Site Básico — Landing Page</div>
+          <div class="plano-preco-blk">
+            <div class="plano-preco-de">a partir de</div>
+            <div class="plano-preco-val">R$ 800</div>
+            <div class="plano-preco-tipo">até R$ 1.500 · pagamento único</div>
+          </div>
+          <div class="plano-divider"></div>
+          <div class="plano-items">
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>1 página completa</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Design responsivo (mobile)</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Estrutura de conversão</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Botão WhatsApp integrado</div>
+          </div>
+          <a href="#contato" class="plano-cta plano-cta-outline">Solicitar Orçamento</a>
+        </div>
+
+        <!-- Site Profissional -->
+        <div class="plano-card destaque reveal d2">
+          <div class="destaque-tag">⭐ Mais Pedido</div>
+          <div class="plano-emoji">🔵</div>
+          <div class="plano-nome">Site Profissional</div>
+          <div class="plano-preco-blk">
+            <div class="plano-preco-de">a partir de</div>
+            <div class="plano-preco-val">R$ 1.500</div>
+            <div class="plano-preco-tipo">até R$ 3.000 · pagamento único</div>
+          </div>
+          <div class="plano-divider"></div>
+          <div class="plano-items">
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Até 5 páginas</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Design personalizado</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Formulário de contato</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Integrações</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>SEO básico</div>
+          </div>
+          <a href="#contato" class="plano-cta">Solicitar Orçamento</a>
+        </div>
+
+        <!-- Site Avançado -->
+        <div class="plano-card reveal d3">
+          <div class="plano-emoji">🟠</div>
+          <div class="plano-nome">Site Avançado</div>
+          <div class="plano-preco-blk">
+            <div class="plano-preco-de">a partir de</div>
+            <div class="plano-preco-val">R$ 3.000</div>
+            <div class="plano-preco-tipo">até R$ 6.000 · pagamento único</div>
+          </div>
+          <div class="plano-divider"></div>
+          <div class="plano-items">
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Até 10 páginas</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Design premium</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Estrutura estratégica</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Integrações avançadas</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Performance + SEO completo</div>
+          </div>
+          <a href="#contato" class="plano-cta plano-cta-outline">Solicitar Orçamento</a>
+        </div>
+
+        <!-- E-commerce -->
+        <div class="plano-card reveal d1">
+          <div class="plano-emoji">🔴</div>
+          <div class="plano-nome">E-commerce</div>
+          <div class="plano-preco-blk">
+            <div class="plano-preco-de">a partir de</div>
+            <div class="plano-preco-val">R$ 2.000</div>
+            <div class="plano-preco-tipo">até R$ 10.000+ · pagamento único</div>
+          </div>
+          <div class="plano-divider"></div>
+          <div class="plano-items">
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Loja virtual completa</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Produtos cadastrados</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Pagamentos e frete</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Integrações</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Treinamento incluído</div>
+            <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Shopify, Nuvemshop ou custom</div>
+          </div>
+          <a href="#contato" class="plano-cta plano-cta-outline">Solicitar Orçamento</a>
+        </div>
+
+        <!-- Manutenção -->
+        <div class="plano-card wide reveal d2">
+          <div style="display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;">
+            <div>
+              <div class="plano-emoji">⚙️</div>
+              <div class="plano-nome">Manutenção Mensal</div>
+              <div class="plano-features" style="margin-top:0.8rem;">
+                <span class="plano-feature">Atualizações do site</span>
+                <span class="plano-feature">Suporte técnico</span>
+                <span class="plano-feature">Ajustes e correções</span>
+                <span class="plano-feature">Monitoramento de performance</span>
+              </div>
+            </div>
+            <div class="plano-estrutura-preco">
+              <div class="plano-preco-de">mensalidade</div>
+              <div class="plano-preco-val">R$ 150</div>
+              <div class="plano-preco-tipo">até R$ 500/mês</div>
+              <a href="#contato" class="plano-cta" style="margin-top:1rem;display:flex;">Contratar</a>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /sites-grid -->
+    </div><!-- /tab-sites -->
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
+     PAGAMENTO
+══════════════════════════════════ -->
+<section id="pagamento" class="section">
+  <div class="container">
+    <div class="pagamento-grid">
+
+      <!-- Lado esquerdo: título + métodos -->
+      <div>
+        <div class="reveal">
+          <div class="eyebrow"><span class="eyebrow-line"></span>Formas de Pagamento</div>
+          <h2 class="section-title">Simples de<br><em>contratar</em></h2>
+          <p style="font-size:0.9rem;color:var(--muted);margin-top:1rem;line-height:1.8;font-weight:300;">
+            Aceitamos diversas formas de pagamento para facilitar o início do seu projeto.
+          </p>
+        </div>
+
+        <div class="pagamento-metodos reveal d2">
+          <!-- Pix -->
+          <div class="pagamento-card">
+            <div class="pagamento-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <div class="pagamento-nome">Pix</div>
+            <div class="pagamento-desc">Transferência instantânea, disponível 24h</div>
+          </div>
+          <!-- Cartão -->
+          <div class="pagamento-card">
+            <div class="pagamento-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+              </svg>
+            </div>
+            <div class="pagamento-nome">Cartão</div>
+            <div class="pagamento-desc">Crédito ou débito via link seguro</div>
+          </div>
+          <!-- Parcelamento -->
+          <div class="pagamento-card">
+            <div class="pagamento-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+              </svg>
+            </div>
+            <div class="pagamento-nome">Parcelamento</div>
+            <div class="pagamento-desc">Em até 12x no cartão de crédito</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lado direito: chave Pix + informações -->
+      <div>
+        <!-- Chave Pix -->
+        <div class="pagamento-pix-box reveal d1">
+          <div class="pagamento-pix-titulo">🔑 Chave Pix</div>
+          <!-- ⚠️ EDITE: substitua pela sua chave Pix abaixo -->
+          <div class="pagamento-pix-key">sua-chave@pix.com</div>
+          <div class="pagamento-pix-nota">⚠️ Edite o arquivo HTML e substitua pela sua chave Pix real</div>
+        </div>
+
+        <!-- Informações adicionais -->
+        <div class="pagamento-info reveal d2">
+          <div class="pagamento-info-titulo">📋 Informações Importantes</div>
+          <div class="pagamento-info-item">50% na contratação e 50% na entrega do projeto</div>
+          <div class="pagamento-info-item">Planos mensais: pagamento antecipado no início de cada mês</div>
+          <div class="pagamento-info-item">Orçamentos personalizados disponíveis sob consulta</div>
+          <!-- ⚠️ EDITE: adicione ou remova informações conforme necessário -->
+        </div>
+
+        <div class="reveal d3" style="margin-top:1.5rem;">
+          <a href="#contato" class="plano-cta" style="display:inline-flex;">
+            Falar sobre pagamento
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style="margin-left:0.5rem;">
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════
      SOBRE
 ══════════════════════════════════ -->
 <section id="sobre" class="section">
@@ -2292,8 +2965,7 @@
     <div class="footer-grid">
       <div>
         <div class="logo-wrap" style="margin-bottom:0;">
-          <div class="logo-svg-mark">T</div>
-          <span class="logo-name">traço<span>.</span></span>
+          <img class="logo-img" src="logooo.png" alt="Traço Agência Criativa" style="height:40px;" />
         </div>
         <p class="footer-brand-desc">Agência criativa especializada em design estratégico. Transformamos marcas em experiências visuais inesquecíveis.</p>
       </div>
@@ -2785,6 +3457,19 @@ function setLoading(on) {
   spinner.classList.toggle('show', on);
   btnIcon.style.display  = on ? 'none' : 'inline';
 }
+/* ════════════════════════════════════════
+   TABS DE PLANOS
+════════════════════════════════════════ */
+document.querySelectorAll('.planos-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.planos-tab').forEach(b => b.classList.remove('ativo'));
+    document.querySelectorAll('.planos-panel').forEach(p => p.classList.remove('ativo'));
+    btn.classList.add('ativo');
+    document.getElementById('tab-' + tab).classList.add('ativo');
+  });
+});
+
 </script>
 
 </body>
