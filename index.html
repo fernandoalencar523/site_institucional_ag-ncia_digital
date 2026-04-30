@@ -1599,6 +1599,7 @@
     .plano-estrutura-preco {
       text-align: center;
     }
+    @media(max-width:768px){ .plano-estrutura-preco { text-align: left; } }
     .plano-preco-de { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
     .plano-preco-val {
       font-family: var(--font-display); font-size: 2.2rem;
@@ -1632,6 +1633,19 @@
     }
     @media(max-width:1024px){ .planos-grid { grid-template-columns: repeat(2,1fr); } }
     @media(max-width:600px){ .planos-grid { grid-template-columns: 1fr; } }
+
+    /* Premium card — span 2 em desktop, normal em mobile */
+    .plano-card-premium { grid-column: span 2; }
+    @media(max-width:600px){ .plano-card-premium { grid-column: span 1; } }
+    /* Interno do premium card */
+    .plano-card-premium-inner {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 2rem; align-items: center;
+    }
+    @media(max-width:600px){
+      .plano-card-premium-inner { grid-template-columns: 1fr; }
+      .plano-card-premium-inner .plano-estrutura-preco { text-align: left; }
+    }
 
     .plano-card {
       position: relative; padding: 2.2rem 2rem;
@@ -1716,9 +1730,16 @@
       gap: 1.5rem;
     }
     .sites-grid .plano-card.wide { grid-column: span 2; }
+    /* Interno do card manutenção */
+    .manutencao-inner {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 2rem; align-items: center;
+    }
     @media(max-width:768px){
       .sites-grid { grid-template-columns: 1fr; }
       .sites-grid .plano-card.wide { grid-column: span 1; }
+      .manutencao-inner { grid-template-columns: 1fr; }
+      .manutencao-inner .plano-estrutura-preco { text-align: left; }
     }
 
     /* ════════════════════════════════════════
@@ -1738,7 +1759,7 @@
       display: grid; grid-template-columns: repeat(3, 1fr);
       gap: 1rem; margin-top: 2rem;
     }
-    @media(max-width:480px){ .pagamento-metodos { grid-template-columns: 1fr; } }
+    @media(max-width:600px){ .pagamento-metodos { grid-template-columns: 1fr; gap: 0.75rem; } }
 
     .pagamento-card {
       padding: 1.8rem 1.5rem;
@@ -1814,6 +1835,17 @@
     .pagamento-pix-nota {
       font-size: 0.75rem; color: rgba(180,210,235,0.4);
       margin-top: 0.4rem; font-style: italic;
+    }
+
+    @media(max-width:600px){
+      .plano-card { padding: 1.6rem 1.4rem; }
+      .plano-estrutura { padding: 1.6rem; }
+      .plano-estrutura-titulo { font-size: 1.3rem; }
+      .planos-tabs { gap: 0.4rem; }
+      .planos-tab { padding: 0.5rem 1rem; font-size: 0.75rem; }
+      .pagamento-card { padding: 1.4rem 1.2rem; }
+      .pagamento-info { padding: 1.4rem 1.4rem 1.4rem 1.8rem; }
+      .pagamento-pix-box { padding: 1.2rem 1.4rem; }
     }
 
   </style>
@@ -2545,9 +2577,9 @@
         </div>
 
         <!-- Premium -->
-        <div class="plano-card reveal d2" style="grid-column: span 2;">
+        <div class="plano-card plano-card-premium reveal d2">
           <div class="plano-emoji">⚫</div>
-          <div style="display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;">
+          <div class="plano-card-premium-inner">
             <div>
               <div class="plano-nome">Plano Premium — Full Gestão</div>
               <div class="plano-preco-blk" style="margin-top:0.5rem;">
@@ -2661,7 +2693,7 @@
 
         <!-- Manutenção -->
         <div class="plano-card wide reveal d2">
-          <div style="display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center;">
+          <div class="manutencao-inner">
             <div>
               <div class="plano-emoji">⚙️</div>
               <div class="plano-nome">Manutenção Mensal</div>
