@@ -558,52 +558,70 @@
     }
 
     /* ════════════════════════════════════════
-       PORTFÓLIO
+       PORTFÓLIO — COMPACTO & PREMIUM
     ════════════════════════════════════════ */
     #portfolio { background: var(--navy); }
 
     .portfolio-top {
       display: flex; align-items: flex-end; justify-content: space-between;
-      margin-bottom: 3rem; flex-wrap: wrap; gap: 1.5rem;
+      margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;
     }
 
-    .filtros { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1.5rem; }
+    .filtros { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
     .filtro-btn {
-      font-size: 0.75rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+      font-size: 0.7rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--muted); border: 1px solid var(--border-soft);
-      padding: 0.5rem 1.1rem;
+      padding: 0.4rem 0.9rem;
       transition: all 0.25s ease;
     }
     .filtro-btn:hover { color: var(--off-white); border-color: rgba(238,244,250,0.25); }
     .filtro-btn.ativo { color: var(--navy-deep); background: var(--electric); border-color: var(--electric); }
 
-    /* ── Grid do portfólio ── */
+    /* ── Grid do portfólio — 4 colunas no desktop ── */
     .portfolio-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
       align-items: start;
     }
+    /* Card destaque: ocupa 2 colunas na primeira linha */
     .proj-wide { grid-column: span 2; }
 
-    /* Quando filtrado: remover span largo para manter grid uniforme */
+    /* Quando filtrado: remover span largo */
     .portfolio-grid.filtrado .proj-wide {
       grid-column: span 1;
     }
     .portfolio-grid.filtrado .proj-wide .proj-visual {
-      aspect-ratio: 4/3;
+      aspect-ratio: 3/2;
     }
 
     /* ── Card base ── */
     .proj-card {
       position: relative; overflow: hidden; cursor: pointer;
-      border-radius: 4px;
+      border-radius: 6px;
+      transition: transform 0.3s var(--ease-out);
     }
+    .proj-card:hover { transform: translateY(-3px); }
+
     .proj-visual {
-      aspect-ratio: 4/3; overflow: hidden; position: relative;
-      border-radius: 4px;
+      aspect-ratio: 3/2; overflow: hidden; position: relative;
+      border-radius: 6px;
     }
-    .proj-wide .proj-visual { aspect-ratio: 16/9; }
+    .proj-wide .proj-visual { aspect-ratio: 16/8; }
+
+    /* Responsivo: 2 colunas em tablet */
+    @media(max-width: 1100px) {
+      .portfolio-grid { grid-template-columns: repeat(2, 1fr); gap: 0.85rem; }
+      .proj-wide { grid-column: span 2; }
+      .proj-wide .proj-visual { aspect-ratio: 16/7; }
+    }
+    /* Mobile: 1 coluna, cards menores */
+    @media(max-width: 600px) {
+      .portfolio-grid { grid-template-columns: 1fr; gap: 0.75rem; }
+      .proj-wide { grid-column: span 1; }
+      .proj-visual { aspect-ratio: 4/3; }
+      .proj-wide .proj-visual { aspect-ratio: 4/3; }
+    }
 
     /* Fundo dos cards com imagem real */
     .proj-bg {
@@ -755,69 +773,70 @@
       position: absolute; inset: 0;
       background: linear-gradient(
         to top,
-        rgba(6,14,31,0.92) 0%,
-        rgba(6,14,31,0.55) 45%,
-        rgba(6,14,31,0.1) 100%
+        rgba(6,14,31,0.95) 0%,
+        rgba(6,14,31,0.5) 40%,
+        rgba(6,14,31,0.05) 100%
       );
       display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 1.8rem;
+      padding: 1.1rem 1.2rem;
       opacity: 0;
-      transition: opacity 0.4s ease;
+      transition: opacity 0.35s ease;
     }
     .proj-card:hover .proj-overlay { opacity: 1; }
 
     /* Título e categoria no overlay */
     .proj-overlay-cat {
-      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em;
+      font-size: 0.62rem; font-weight: 500; letter-spacing: 0.14em;
       text-transform: uppercase; color: var(--electric);
-      transform: translateY(16px); transition: transform 0.45s var(--ease-out) 0.05s;
-      margin-bottom: 0.35rem;
+      transform: translateY(12px); transition: transform 0.4s var(--ease-out) 0.04s;
+      margin-bottom: 0.2rem;
     }
     .proj-overlay-title {
-      font-family: var(--font-display); font-size: 1.15rem; font-weight: 700;
-      color: var(--white); line-height: 1.25;
-      transform: translateY(16px); transition: transform 0.45s var(--ease-out) 0.1s;
-      margin-bottom: 0.6rem;
+      font-family: var(--font-display); font-size: 0.95rem; font-weight: 700;
+      color: var(--white); line-height: 1.2;
+      transform: translateY(12px); transition: transform 0.4s var(--ease-out) 0.08s;
+      margin-bottom: 0.4rem;
     }
     .proj-overlay-desc {
-      font-size: 0.82rem; font-weight: 300; line-height: 1.6;
-      color: rgba(238,244,250,0.75);
-      transform: translateY(16px); transition: transform 0.45s var(--ease-out) 0.15s;
-      margin-bottom: 1rem;
+      font-size: 0.74rem; font-weight: 300; line-height: 1.5;
+      color: rgba(238,244,250,0.72);
+      transform: translateY(12px); transition: transform 0.4s var(--ease-out) 0.12s;
+      margin-bottom: 0.7rem;
+      display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
     .proj-card:hover .proj-overlay-cat,
     .proj-card:hover .proj-overlay-title,
     .proj-card:hover .proj-overlay-desc { transform: none; }
 
     .proj-link {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase;
       color: var(--electric);
-      transform: translateY(16px); transition: transform 0.45s var(--ease-out) 0.2s;
+      transform: translateY(12px); transition: transform 0.4s var(--ease-out) 0.16s;
     }
     .proj-card:hover .proj-link { transform: none; }
     .proj-link svg { transition: transform 0.25s ease; }
-    .proj-card:hover .proj-link svg { transform: translateX(5px); }
+    .proj-card:hover .proj-link svg { transform: translateX(4px); }
 
-    /* Info abaixo do card */
-    .proj-info { padding: 1.1rem 0 0.5rem; }
-    .proj-meta { display: flex; justify-content: space-between; margin-bottom: 0.3rem; }
-    .proj-cat { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--electric); }
-    .proj-ano { font-size: 0.7rem; color: rgba(238,244,250,0.3); }
-    .proj-titulo { font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; color: var(--white); }
+    /* Info abaixo do card — mais compacta */
+    .proj-info { padding: 0.65rem 0 0.25rem; }
+    .proj-meta { display: flex; justify-content: space-between; margin-bottom: 0.15rem; }
+    .proj-cat { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--electric); }
+    .proj-ano { font-size: 0.62rem; color: rgba(238,244,250,0.3); }
+    .proj-titulo { font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; color: var(--white); line-height: 1.2; }
 
     /* Indicador de clique */
     .proj-visual::after {
       content: '';
       position: absolute; inset: 0;
       border: 1px solid transparent;
-      border-radius: 4px;
-      transition: border-color 0.35s ease;
+      border-radius: 6px;
+      transition: border-color 0.3s ease;
       pointer-events: none;
     }
-    .proj-card:hover .proj-visual::after { border-color: rgba(75,170,220,0.3); }
+    .proj-card:hover .proj-visual::after { border-color: rgba(75,170,220,0.35); }
 
-    .portfolio-cta { display: flex; justify-content: center; margin-top: 4rem; }
+    .portfolio-cta { display: flex; justify-content: center; margin-top: 2.5rem; }
 
     .btn-outline {
       font-family: var(--font-body); font-size: 0.82rem;
@@ -2128,8 +2147,30 @@
 
     <div class="portfolio-grid" id="portfolioGrid">
 
-      <!-- ── 1. Identidade Visual: YHWH (imagem real) — card largo ── -->
+      <!-- ── MADRUGA TECH — Identidade Visual (card largo, primeiro lugar) ── -->
       <div class="proj-card proj-wide reveal d1" data-cat="Identidade Visual"
+           data-modal-title="Identidade Visual — Madruga Tech"
+           data-modal-cat="Identidade Visual"
+           data-modal-ano="2025"
+           data-modal-img="madruga_tech_id.png"
+           data-modal-desc="Identidade visual completa para a Madruga Tech, empresa de assistência técnica especializada em dispositivos eletrônicos. O projeto desenvolveu um logotipo marcante que combina a silhueta de uma maçã estilizada com chapéu e bigode, remetendo ao universo tech com personalidade única. A paleta de cores é composta por azul profundo (#00113B), preto (#000000), azul elétrico (#0069FE), cinza claro (#D9D9D9) e branco (#FFFFFF) — transmitindo modernidade, confiança e tecnologia. A tipografia principal UT Zinga Demo confere identidade forte e contemporânea, enquanto a Silkscreenn complementa com estética digital precisa. O resultado é uma marca coesa, técnica e memorável, com versatilidade para aplicação em fundo escuro, claro e colorido.">
+        <div class="proj-visual">
+          <div class="proj-bg" style="background-image: url('madruga_tech_id.png'); background-size: cover; background-position: center top;"></div>
+          <div class="proj-overlay">
+            <span class="proj-overlay-cat">Identidade Visual</span>
+            <h4 class="proj-overlay-title">Madruga Tech — Branding</h4>
+            <p class="proj-overlay-desc">Logo, paleta, tipografia e sistema visual completo para assistência técnica.</p>
+            <span class="proj-link">Ver Projeto <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </div>
+        </div>
+        <div class="proj-info">
+          <div class="proj-meta"><span class="proj-cat">Identidade Visual</span><span class="proj-ano">2025</span></div>
+          <h3 class="proj-titulo">Madruga Tech — Identidade Visual</h3>
+        </div>
+      </div>
+
+      <!-- ── 1. Identidade Visual: YHWH (imagem real) ── -->
+      <div class="proj-card reveal d2" data-cat="Identidade Visual"
            data-modal-title="Identidade Visual — YHWH"
            data-modal-cat="Identidade Visual"
            data-modal-ano="2024"
@@ -2325,7 +2366,7 @@
       </div>
 
       <!-- ── 4. Site moderno 1: Clínica / Saúde ── -->
-      <div class="proj-card proj-wide reveal d1" data-cat="Site"
+      <div class="proj-card reveal d1" data-cat="Site"
            data-modal-title="Site Institucional — Global University"
            data-modal-cat="Site"
            data-modal-ano="2025"
@@ -2392,7 +2433,6 @@
           <h3 class="proj-titulo">Valdez Arquitetura</h3>
         </div>
       </div>
-</div>
     </div><!-- /portfolioGrid -->
 
     <div class="portfolio-cta reveal">
@@ -2457,7 +2497,7 @@
             <div class="plano-preco-de">Investimento</div>
             <div class="plano-preco-val">R$ 800</div>
             <div class="plano-preco-tipo">a R$ 2.500 · pagamento único</div>
-            <a href="#contato" class="plano-cta" style="margin-top:1.2rem;display:flex;">Quero Estruturar</a>
+            <a href="https://wa.me/5561992114031?text=Ol%C3%A1!%20Vi%20o%20plano%20de%20Estrutura%C3%A7%C3%A3o%20do%20Zero%20no%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento." target="_blank" rel="noopener" class="plano-cta" style="margin-top:1.2rem;display:flex;">Quero Estruturar</a>
           </div>
         </div>
       </div>
@@ -2490,7 +2530,7 @@
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Impulsionamento</div>
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Acompanhamento básico</div>
           </div>
-          <a href="#contato" class="plano-cta plano-cta-outline">Começar Agora</a>
+          <a href="https://wa.me/5561992114031?text=Ol%C3%A1!%20Vi%20o%20Plano%20B%C3%A1sico%20no%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20esse%20plano." target="_blank" rel="noopener" class="plano-cta plano-cta-outline">Começar Agora</a>
         </div>
 
         <!-- Essencial -->
@@ -2517,7 +2557,7 @@
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Testes e ajustes</div>
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Relatório mensal</div>
           </div>
-          <a href="#contato" class="plano-cta plano-cta-outline">Começar Agora</a>
+          <a href="https://wa.me/5561992114031?text=Ol%C3%A1!%20Vi%20o%20Plano%20Intermedi%C3%A1rio%20no%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20esse%20plano." target="_blank" rel="noopener" class="plano-cta plano-cta-outline">Começar Agora</a>
         </div>
 
         <!-- Crescimento -->
@@ -2545,7 +2585,7 @@
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Otimizações frequentes</div>
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Análise de métricas</div>
           </div>
-          <a href="#contato" class="plano-cta">Começar Agora</a>
+          <a href="https://wa.me/5561992114031?text=Ol%C3%A1!%20Vi%20o%20Plano%20Crescimento%20no%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20esse%20plano." target="_blank" rel="noopener" class="plano-cta">Começar Agora</a>
         </div>
 
         <!-- Autoridade -->
@@ -2573,7 +2613,7 @@
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Público avançado + Remarketing</div>
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Testes e otimizações</div>
           </div>
-          <a href="#contato" class="plano-cta plano-cta-outline">Começar Agora</a>
+          <a href="https://wa.me/5561992114031?text=Ol%C3%A1!%20Vi%20o%20Plano%20Autoridade%20no%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20esse%20plano." target="_blank" rel="noopener" class="plano-cta plano-cta-outline">Começar Agora</a>
         </div>
 
         <!-- Premium -->
@@ -2598,7 +2638,7 @@
               </div>
             </div>
             <div>
-              <a href="#contato" class="plano-cta" style="white-space:nowrap;">Quero o Premium</a>
+              <a href="https://wa.me/5561992114031?text=Ol%C3%A1!%20Vi%20o%20Plano%20Premium%20no%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20esse%20plano." target="_blank" rel="noopener" class="plano-cta" style="white-space:nowrap;">Quero o Premium</a>
             </div>
           </div>
         </div>
@@ -2626,7 +2666,7 @@
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Estrutura de conversão</div>
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Botão WhatsApp integrado</div>
           </div>
-          <a href="#contato" class="plano-cta plano-cta-outline">Solicitar Orçamento</a>
+          <a href="https://wa.me/5561992114031?text=Ol%C3%A1!%20Vi%20o%20Plano%20B%C3%A1sico%20(Site)%20no%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20esse%20plano." target="_blank" rel="noopener" class="plano-cta plano-cta-outline">Solicitar Orçamento</a>
         </div>
 
         <!-- Site Profissional -->
@@ -2647,7 +2687,7 @@
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Integrações</div>
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>SEO básico</div>
           </div>
-          <a href="#contato" class="plano-cta">Solicitar Orçamento</a>
+          <a href="https://wa.me/5561992114031?text=Ol%C3%A1!%20Vi%20o%20Plano%20Intermedi%C3%A1rio%20(Site%20Profissional)%20no%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20esse%20plano." target="_blank" rel="noopener" class="plano-cta">Solicitar Orçamento</a>
         </div>
 
         <!-- Site Avançado -->
@@ -2667,7 +2707,7 @@
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Integrações avançadas</div>
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Performance + SEO completo</div>
           </div>
-          <a href="#contato" class="plano-cta plano-cta-outline">Solicitar Orçamento</a>
+          <a href="https://wa.me/5561992114031?text=Ol%C3%A1!%20Vi%20o%20Plano%20Avan%C3%A7ado%20(Site)%20no%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20esse%20plano." target="_blank" rel="noopener" class="plano-cta plano-cta-outline">Solicitar Orçamento</a>
         </div>
 
         <!-- E-commerce -->
@@ -2688,7 +2728,7 @@
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Treinamento incluído</div>
             <div class="plano-item"><svg class="plano-item-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Shopify, Nuvemshop ou custom</div>
           </div>
-          <a href="#contato" class="plano-cta plano-cta-outline">Solicitar Orçamento</a>
+          <a href="https://wa.me/5561992114031?text=Ol%C3%A1!%20Vi%20o%20Plano%20Premium%20(E-commerce)%20no%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento%20para%20esse%20plano." target="_blank" rel="noopener" class="plano-cta plano-cta-outline">Solicitar Orçamento</a>
         </div>
 
         <!-- Manutenção -->
@@ -2708,7 +2748,7 @@
               <div class="plano-preco-de">mensalidade</div>
               <div class="plano-preco-val">R$ 150</div>
               <div class="plano-preco-tipo">até R$ 500/mês</div>
-              <a href="#contato" class="plano-cta" style="margin-top:1rem;display:flex;">Contratar</a>
+              <a href="https://wa.me/5561992114031?text=Ol%C3%A1!%20Vi%20o%20plano%20de%20Manuten%C3%A7%C3%A3o%20Mensal%20no%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento." target="_blank" rel="noopener" class="plano-cta" style="margin-top:1rem;display:flex;">Contratar</a>
             </div>
           </div>
         </div>
@@ -2908,7 +2948,7 @@
             </div>
             <div>
               <div class="contato-item-label">E-mail</div>
-              <div class="contato-item-val">oi@traco.studio</div>
+              <div class="contato-item-val">traco0061@gmail.com</div>
             </div>
           </div>
           <div class="contato-item">
@@ -3027,7 +3067,7 @@
       <div>
         <div class="footer-col-title">Contato</div>
         <div class="footer-link-list">
-          <span class="footer-link">oi@traco.studio</span>
+          <span class="footer-link">traco0061@gmail.com</span>
           <span class="footer-link">(61) 9 9278-9648 / (61) 9 9211-4031</span>
           <span class="footer-link">Brasilia, DF · Brasil</span>
         </div>
